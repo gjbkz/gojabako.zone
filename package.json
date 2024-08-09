@@ -44,7 +44,7 @@
     "acorn": "8.12.1",
     "chokidar": "3.6.0",
     "esbuild-loader": "4.2.2",
-    "eslint": "8.57.0",
+    "eslint": "9.8.0",
     "eslint-config-next": "14.2.5",
     "hast-util-from-html": "2.0.1",
     "hast-util-to-string": "3.0.0",

@@ -29,7 +29,7 @@
 	"dependencies": {
 		"@fontsource/noto-sans-jp": "5.1.0",
 		"@mdx-js/loader": "3.1.0",
-		"@next/mdx": "14.2.15",
+		"@next/mdx": "15.0.0",
 		"@nlib/tsm": "1.1.0",
 		"@nlib/typing": "3.0.1",
 		"@storybook/csf": "0.1.11",

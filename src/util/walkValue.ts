@@ -100,10 +100,9 @@ const walkObject = function* (
 			for (const item of iterator as Iterable<unknown>) {
 				if (Array.isArray(item)) {
 					yield* walkValue(item[1], path.concat(item[0]), circular);
-					return;
 				}
-				break;
 			}
+			return;
 		}
 	}
 	for (const key of Object.keys(value)) {

@@ -73,7 +73,21 @@
       margin-block-start: 0;
     }
 
+    summary {
+      & + h2,
+      & + h3,
+      & + h4,
+      & + h5,
+      & + h6 {
+        margin-block-start: 1em;
+      }
+    }
+
     p {
+      margin-block-end: 1em;
+    }
+
+    details {
       margin-block-end: 1em;
     }
 

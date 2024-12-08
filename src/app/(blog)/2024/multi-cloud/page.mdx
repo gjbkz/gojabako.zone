@@ -1,9 +1,9 @@
 export const metadata = {
   title: 'Cloud Run, Amplify, Netlify, VercelにNext.jsをデプロイ',
-  description: 'このブログを複数のサービスでホストするようにしました。',
+  description: 'このブログを複数のサービスで運用するようにしました。',
 };
 
-このブログをCloud Run, AWS Amplify, Netlify, Vercelでホストするようにしました。DNS (Route 53) でリクエストを振り分けています。
+このブログをCloud Run, AWS Amplify, Netlify, Vercelで運用するようにしました。DNS (Route 53) でリクエストを振り分けています。
 
 ## デプロイ
 
@@ -57,15 +57,15 @@ Netlifyは「Domain management」、Vercelは「Settings」→「Domains」で�
 
 ## ヘルスチェック
 
-Route 53でヘルスチェックを設定し正常でないホスト先を返さないようにしました。
+Route 53でヘルスチェックを設定し正常でないエンドポイントはを返さないようにしました。
 
 1. middleware.ts で GET /health に 200 を返すようにします。
-2. ホスト先の `https://mainブランチデプロイ先/health` が動いているか確認します。
+2. それぞれの `https://mainブランチデプロイ先/health` が動いているか確認します。
 3. Route 53のヘルスチェックを設定して終わりです。Route 53の料金は2024年12月時点で以下の通りです。
 
 ![[Amazon Route 53 料金表](https://aws.amazon.com/jp/route53/pricing/)](./route5302.webp)
 
-AWS以外のエンドポイントにHTTPSでヘルスチェックすると1ホスト 2.75USD/月 です。ちょっともったいないのでCloudWatchアラームで節約できるか試してみました。
+AWS以外のエンドポイントにHTTPSでヘルスチェックすると1エンドポイント 2.75USD/月 です。ちょっともったいないのでCloudWatchアラームで節約できるか試してみました。
 
 まず、Lambda関数を追加します。
 

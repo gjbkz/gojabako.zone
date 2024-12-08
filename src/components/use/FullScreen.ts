@@ -1,6 +1,6 @@
 import type { SyntheticEvent } from "react";
 import { useCallback, useState } from "react";
-import { isClient } from "../../util/env.ts";
+import { hasWindow } from "../../util/env";
 
 export const useFullScreen = (selector: string) => {
 	const [state, setState] = useState(getState());
@@ -22,4 +22,4 @@ export const useFullScreen = (selector: string) => {
 	return [state, toggle] as const;
 };
 
-const getState = () => Boolean(isClient && document.fullscreenElement);
+const getState = () => Boolean(hasWindow && document.fullscreenElement);

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { isClient } from "../../util/env";
+import { hasWindow } from "../../util/env";
 
 const getViewportSize = () =>
-	isClient
+	hasWindow
 		? { width: window.innerWidth, height: window.innerHeight }
 		: { width: 0, height: 0 };
 

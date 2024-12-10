@@ -1,0 +1,18 @@
+.data, .md {
+  padding: 0.5em 1em;
+  line-height: 1.4;
+  background-color: var(--gjGray1);
+}
+
+.button {
+  padding-inline: 0.5em;
+  margin-inline-start: 1em;
+  border-style: solid;
+  border-radius: var(--gjBorderRadius);
+  font-size: 90%;
+  line-height: 1.5;
+}
+
+.center {
+  text-align: center;
+}

@@ -1,0 +1,157 @@
+export const metadata = {
+  title: 'Cloud Run, Amplify, Netlify, Vercel上のNext.js環境変数事情',
+  description: '環境変数はどのタイミングで何が使えるのかを検証しました。',
+};
+import { EnvTestApi } from "./EnvTestApi.tsx";
+import { EnvTestSsr } from "./EnvTestSsr.tsx";
+import { EnvTestClient } from "./EnvTestClient.tsx";
+import { EnvTestTable } from "./EnvTestTable.tsx";
+
+[前の記事](./multi-cloud)で環境が複数になったのでログをNewRelicに集めようとしたら環境変数が素直に渡らないことがあったので検証することにしました。
+
+## 検証したいこと
+
+以下の2点を検証します。
+
+1. Vercel等の設定画面、[.envファイル]、[next.config.js]の設定値はどれが勝つのか？
+2. ビルド、middleware、SSR、クライアントでどの環境変数が使えるのか？
+
+[.envファイル]: https://nextjs.org/docs/app/building-your-application/configuring/environment-variables
+[next.config.js]: https://nextjs.org/docs/app/api-reference/next-config-js/env
+
+## 検証方法
+
+以下のラインナップで環境変数を設定します。説明のためVercelを例にします。
+
+- E: [.envファイル]での設定値
+- N: [next.config.js]での設定値
+- V: [Vercelの設定画面]での設定値
+
+[Vercelの設定画面]: https://vercel.com/docs/projects/environment-variables
+
+|環境変数名|E|N|V|観点|
+|---|:---:|:---:|:---:|---|
+|EVTEST_ENV                |env|      |      |どこで使えるか|
+|EVTEST_CNF                |   |config|      |どこで使えるか|
+|EVTEST_HST                |   |      |vercel|どこで使えるか|
+|EVTEST_ENV_CNF            |env|config|      |どっちが勝つか|
+|EVTEST_ENV_HST            |env|      |vercel|どっちが勝つか|
+|EVTEST_CNF_HST            |   |config|vercel|どっちが勝つか|
+|NEXT_PUBLIC_EVTEST_ENV    |env|      |      |どこで使えるか|
+|NEXT_PUBLIC_EVTEST_CNF    |   |config|      |どこで使えるか|
+|NEXT_PUBLIC_EVTEST_HST    |   |      |vercel|どこで使えるか|
+|NEXT_PUBLIC_EVTEST_ENV_CNF|env|config|      |どっちが勝つか|
+|NEXT_PUBLIC_EVTEST_ENV_HST|env|      |vercel|どっちが勝つか|
+|NEXT_PUBLIC_EVTEST_CNF_HST|   |config|vercel|どっちが勝つか|
+
+### .envファイルでの設定
+
+```sh
+EVTEST_ENV=env
+EVTEST_ENV_CNF=env
+EVTEST_ENV_HST=env
+NEXT_PUBLIC_EVTEST_ENV=env
+NEXT_PUBLIC_EVTEST_ENV_CNF=env
+NEXT_PUBLIC_EVTEST_ENV_HST=env
+```
+
+### next.config.js (next.config.ts) での設定
+
+```ts
+const nextConfig: NextConfig = {
+  env: {
+    EVTEST_CNF: "config",
+    EVTEST_ENV_CNF: "config",
+    EVTEST_CNF_HST: "config",
+    NEXT_PUBLIC_EVTEST_CNF: "config",
+    NEXT_PUBLIC_EVTEST_ENV_CNF: "config",
+    NEXT_PUBLIC_EVTEST_CNF_HST: "config",
+    // 以下はここで明示的に渡してみるテスト
+    EVTEST_ENV2: process.env.EVTEST_ENV,
+    EVTEST_CNF2: process.env.EVTEST_CNF,
+    EVTEST_HST2: process.env.EVTEST_HST,
+    EVTEST_ENV_CNF2: process.env.EVTEST_ENV_CNF,
+    EVTEST_ENV_HST2: process.env.EVTEST_ENV_HST,
+    EVTEST_CNF_HST2: process.env.EVTEST_CNF_HST,
+    NEXT_PUBLIC_EVTEST_ENV2: process.env.NEXT_PUBLIC_EVTEST_ENV,
+    NEXT_PUBLIC_EVTEST_CNF2: process.env.NEXT_PUBLIC_EVTEST_CNF,
+    NEXT_PUBLIC_EVTEST_HST2: process.env.NEXT_PUBLIC_EVTEST_HST,
+    NEXT_PUBLIC_EVTEST_ENV_CNF2: process.env.NEXT_PUBLIC_EVTEST_ENV_CNF,
+    NEXT_PUBLIC_EVTEST_ENV_HST2: process.env.NEXT_PUBLIC_EVTEST_ENV_HST,
+    NEXT_PUBLIC_EVTEST_CNF_HST2: process.env.NEXT_PUBLIC_EVTEST_CNF_HST,
+  },
+};
+```
+
+### Vercelの設定画面での設定
+
+![Vercelの環境変数設定画面](./vercel01.webp)
+
+### 確認方法
+
+まず、以下の関数を用意しました。
+
+```ts
+export const listEnvTestEntries = function* (): Generator<[string, string | undefined]> {
+  yield ["EVTEST_ENV", process.env.EVTEST_ENV];
+  yield ["EVTEST_CNF", process.env.EVTEST_CNF];
+  yield ["EVTEST_HST", process.env.EVTEST_HST];
+  yield ["EVTEST_ENV_CNF", process.env.EVTEST_ENV_CNF];
+  yield ["EVTEST_ENV_HST", process.env.EVTEST_ENV_HST];
+  yield ["EVTEST_CNF_HST", process.env.EVTEST_CNF_HST];
+  yield ["NEXT_PUBLIC_EVTEST_ENV", process.env.NEXT_PUBLIC_EVTEST_ENV];
+  yield ["NEXT_PUBLIC_EVTEST_CNF", process.env.NEXT_PUBLIC_EVTEST_CNF];
+  yield ["NEXT_PUBLIC_EVTEST_HST", process.env.NEXT_PUBLIC_EVTEST_HST];
+  yield ["NEXT_PUBLIC_EVTEST_ENV_CNF", process.env.NEXT_PUBLIC_EVTEST_ENV_CNF];
+  yield ["NEXT_PUBLIC_EVTEST_ENV_HST", process.env.NEXT_PUBLIC_EVTEST_ENV_HST];
+  yield ["NEXT_PUBLIC_EVTEST_CNF_HST", process.env.NEXT_PUBLIC_EVTEST_CNF_HST];
+  yield ["EVTEST_ENV2", process.env.EVTEST_ENV2];
+  yield ["EVTEST_CNF2", process.env.EVTEST_CNF2];
+  yield ["EVTEST_HST2", process.env.EVTEST_HST2];
+  yield ["EVTEST_ENV_CNF2", process.env.EVTEST_ENV_CNF2];
+  yield ["EVTEST_ENV_HST2", process.env.EVTEST_ENV_HST2];
+  yield ["EVTEST_CNF_HST2", process.env.EVTEST_CNF_HST2];
+  yield ["NEXT_PUBLIC_EVTEST_ENV2", process.env.NEXT_PUBLIC_EVTEST_ENV2];
+  yield ["NEXT_PUBLIC_EVTEST_CNF2", process.env.NEXT_PUBLIC_EVTEST_CNF2];
+  yield ["NEXT_PUBLIC_EVTEST_HST2", process.env.NEXT_PUBLIC_EVTEST_HST2];
+  yield ["NEXT_PUBLIC_EVTEST_ENV_CNF2", process.env.NEXT_PUBLIC_EVTEST_ENV_CNF2];
+  yield ["NEXT_PUBLIC_EVTEST_ENV_HST2", process.env.NEXT_PUBLIC_EVTEST_ENV_HST2];
+  yield ["NEXT_PUBLIC_EVTEST_CNF_HST2", process.env.NEXT_PUBLIC_EVTEST_CNF_HST2];
+};
+```
+
+で、これを以下の部分で呼びます。
+
+|タイミング|値の処理|
+|---|---|
+|ビルド時|next.config.tsで呼んでconsole.logしてビルドのログを見て結果をまとめます。|
+|このページのMiddleware処理時|[`/envtest`](/envtest)で結果を返すようにし、リクエストを送るコンポーネントを作って出力します。|
+|このページのSSR処理時|SSRのコンポーネントを作って出力します。|
+|このページのクライアント処理時|`"use client"` なコンポーネントを作って出力します。|
+
+## 結果
+
+## このページでの結果
+
+<EnvTestTable id="envtest-result"/>
+
+<details>
+<summary>元データ</summary>
+
+### Middleware
+
+<EnvTestApi path="/envtest" columnName="Middleware"/>
+
+### SSR
+
+<EnvTestSsr/>
+
+### API Route
+
+<EnvTestApi path="./api" columnName="API Route"/>
+
+### Client
+
+<EnvTestClient/>
+</details>
+

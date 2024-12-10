@@ -2,7 +2,6 @@
 import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { IconClass } from "../../util/classnames.ts";
-import { isClient } from "../../util/env.ts";
 import { getCurrentUrl } from "../../util/getCurrentUrl.ts";
 import { noop } from "../../util/noop.ts";
 import * as style from "./style.module.scss";
@@ -33,7 +32,9 @@ interface BaseWidthSelectorProps {
 }
 
 const BaseWidthSelector = ({ parent }: BaseWidthSelectorProps) => {
-	const [baseWidth, setBaseWidth] = useState(getInitialBaseWidth());
+	const [baseWidth, setBaseWidth] = useState(
+		getCurrentUrl().searchParams.get("w") ?? "default",
+	);
 	useEffect(() => {
 		const url = getCurrentUrl();
 		if (baseWidth === "default") {
@@ -77,11 +78,4 @@ const BaseWidthSelector = ({ parent }: BaseWidthSelectorProps) => {
 			</select>
 		</>
 	);
-};
-
-const getInitialBaseWidth = () => {
-	if (!isClient) {
-		return "default";
-	}
-	return getCurrentUrl().searchParams.get("w") ?? "default";
 };

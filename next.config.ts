@@ -8,6 +8,9 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import { rehypeArticle } from "./src/unified/rehypeArticle.ts";
 import { rehypeEmbed } from "./src/unified/rehypeEmbed.ts";
+import { listEnvTestEntries } from "./src/util/testEnv.ts";
+
+console.info("EnvTest:beforeConfig", [...listEnvTestEntries()]);
 
 const withMDX = mdx({
 	options: {
@@ -33,6 +36,24 @@ const nextConfig: NextConfig = {
 		NETLIFY: process.env.NETLIFY,
 		K_SERVICE: process.env.K_SERVICE,
 		AWS_REGION: process.env.AWS_REGION,
+		EVTEST_CNF: "config",
+		EVTEST_ENV_CNF: "config",
+		EVTEST_CNF_HST: "config",
+		NEXT_PUBLIC_EVTEST_CNF: "config",
+		NEXT_PUBLIC_EVTEST_ENV_CNF: "config",
+		NEXT_PUBLIC_EVTEST_CNF_HST: "config",
+		EVTEST_ENV2: process.env.EVTEST_ENV,
+		EVTEST_CNF2: process.env.EVTEST_CNF,
+		EVTEST_HST2: process.env.EVTEST_HST,
+		EVTEST_ENV_CNF2: process.env.EVTEST_ENV_CNF,
+		EVTEST_ENV_HST2: process.env.EVTEST_ENV_HST,
+		EVTEST_CNF_HST2: process.env.EVTEST_CNF_HST,
+		NEXT_PUBLIC_EVTEST_ENV2: process.env.NEXT_PUBLIC_EVTEST_ENV,
+		NEXT_PUBLIC_EVTEST_CNF2: process.env.NEXT_PUBLIC_EVTEST_CNF,
+		NEXT_PUBLIC_EVTEST_HST2: process.env.NEXT_PUBLIC_EVTEST_HST,
+		NEXT_PUBLIC_EVTEST_ENV_CNF2: process.env.NEXT_PUBLIC_EVTEST_ENV_CNF,
+		NEXT_PUBLIC_EVTEST_ENV_HST2: process.env.NEXT_PUBLIC_EVTEST_ENV_HST,
+		NEXT_PUBLIC_EVTEST_CNF_HST2: process.env.NEXT_PUBLIC_EVTEST_CNF_HST,
 	},
 	webpack: (config, _options) => {
 		config.module.rules.push(

@@ -8,7 +8,7 @@
 		"test:type": "tsc --noEmit",
 		"test:unit": "tsm-test src",
 		"playwright": "playwright test",
-		"dev": "run-p build:meta dev:*",
+		"dev": "run-p build:meta pageList dev:*",
 		"dev:css": "node --import=@nlib/tsm src/cli/scssTypes.ts --watch",
 		"dev:stories": "node --import=@nlib/tsm src/cli/stories.ts --watch",
 		"dev:next": "next",

@@ -34,7 +34,7 @@
 		"@next/mdx": "15.1.0",
 		"@nlib/tsm": "1.1.0",
 		"@nlib/typing": "3.0.1",
-		"@opentelemetry/otlp-exporter-base": "0.55.0",
+		"@opentelemetry/otlp-exporter-base": "0.56.0",
 		"@opentelemetry/sdk-logs": "0.56.0",
 		"@storybook/csf": "0.1.12",
 		"@svgr/webpack": "8.1.0",

@@ -62,7 +62,7 @@
 		"remark-gfm": "4.0.1",
 		"remark-math": "6.0.0",
 		"sharp": "0.33.5",
-		"typescript": "5.7.3",
+		"typescript": "5.8.2",
 		"unist-util-find": "3.0.0",
 		"unist-util-visit": "5.0.0",
 		"vlq": "2.0.4"

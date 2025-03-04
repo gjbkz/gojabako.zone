@@ -35,7 +35,7 @@
 		"@nlib/tsm": "1.1.0",
 		"@nlib/typing": "3.0.1",
 		"@opentelemetry/otlp-transformer": "0.57.0",
-		"@opentelemetry/sdk-logs": "0.57.0",
+		"@opentelemetry/sdk-logs": "0.57.2",
 		"@storybook/csf": "0.1.13",
 		"@svgr/webpack": "8.1.0",
 		"@types/kuromoji": "0.1.3",

@@ -29,7 +29,7 @@
 		"encrypt-env": "dotenvx encrypt"
 	},
 	"dependencies": {
-		"@fontsource/noto-sans-jp": "5.1.1",
+		"@fontsource/noto-sans-jp": "5.2.5",
 		"@mdx-js/loader": "3.1.0",
 		"@next/mdx": "15.2.0",
 		"@nlib/tsm": "1.1.0",

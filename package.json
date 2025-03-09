@@ -80,7 +80,7 @@
 		"@biomejs/js-api": "0.7.1",
 		"@biomejs/wasm-nodejs": "1.9.4",
 		"@nlib/githooks": "0.2.2",
-		"@playwright/test": "1.50.1",
+		"@playwright/test": "1.51.0",
 		"stylelint": "16.14.0",
 		"stylelint-config-recommended": "14.0.1"
 	}

@@ -82,6 +82,6 @@
 		"@nlib/githooks": "0.2.2",
 		"@playwright/test": "1.51.1",
 		"stylelint": "16.16.0",
-		"stylelint-config-recommended": "14.0.1"
+		"stylelint-config-recommended": "15.0.0"
 	}
 }

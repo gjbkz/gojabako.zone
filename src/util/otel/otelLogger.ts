@@ -1,4 +1,4 @@
-import { baggageUtils } from "@opentelemetry/core";
+import { parseKeyPairsIntoRecord } from "@opentelemetry/core";
 import {
 	LoggerProvider,
 	SimpleLogRecordProcessor,
@@ -10,12 +10,10 @@ import { otelWorkers } from "./otelWorkers";
 const logExporter = new OtelLogExporter({
 	url: process.env.OTEL_EXPORTER_OTLP_LOGS_ENDPOINT,
 	headers: {
-		...baggageUtils.parseKeyPairsIntoRecord(
+		...parseKeyPairsIntoRecord(
 			process.env.OTEL_EXPORTER_OTLP_LOGS_HEADERS?.trim(),
 		),
-		...baggageUtils.parseKeyPairsIntoRecord(
-			process.env.OTEL_EXPORTER_OTLP_HEADERS?.trim(),
-		),
+		...parseKeyPairsIntoRecord(process.env.OTEL_EXPORTER_OTLP_HEADERS?.trim()),
 	},
 });
 otelWorkers.add(logExporter);

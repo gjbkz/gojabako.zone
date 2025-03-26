@@ -1,5 +1,5 @@
 import { isString } from "@nlib/typing";
-import { Resource } from "@opentelemetry/resources";
+import { resourceFromAttributes } from "@opentelemetry/resources";
 import {
 	ATTR_SERVICE_NAME,
 	ATTR_SERVICE_VERSION,
@@ -41,7 +41,7 @@ const listRuntimeAttributes = function* (): Generator<
 	}
 };
 
-export const otelResource = new Resource(
+export const otelResource = resourceFromAttributes(
 	(() => {
 		const attributes: Record<string, string> = {};
 		for (const [key, value] of listRuntimeAttributes()) {

@@ -105,6 +105,7 @@
 			word-break: break-all;
 		}
 
+		/* biome-ignore lint/style/noDescendingSpecificity: .badge.empty と code.empty は別のため */
 		&.empty {
 			&::before {
 				content: "Empty";

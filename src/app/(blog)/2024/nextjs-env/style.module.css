@@ -59,6 +59,14 @@ figure > .wrapper {
 				font-size: 90%;
 			}
 
+			&.odd {
+				background-color: var(--gjBlue0);
+			}
+
+			&.even {
+				background-color: var(--gjRed0);
+			}
+
 			&.input {
 				display: grid;
 				grid-template-columns: 1.8em repeat(4, 1.2em);
@@ -85,14 +93,6 @@ figure > .wrapper {
 			&.even {
 				background-color: var(--gjRed1);
 			}
-		}
-
-		&.odd {
-			background-color: var(--gjBlue0);
-		}
-
-		&.even {
-			background-color: var(--gjRed0);
 		}
 	}
 }

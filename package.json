@@ -44,7 +44,7 @@
 		"hast-util-from-html": "2.0.3",
 		"hast-util-to-string": "3.0.1",
 		"kuromoji": "0.1.2",
-		"lint-staged": "15.5.0",
+		"lint-staged": "16.2.3",
 		"lowlight": "3.3.0",
 		"mdast-util-from-markdown": "2.0.2",
 		"mdast-util-to-hast": "13.2.0",

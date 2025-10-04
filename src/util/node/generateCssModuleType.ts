@@ -1,6 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises";
-import postcss from "postcss";
 import type { AtRule, Document, Root, Rule } from "postcss";
+import postcss from "postcss";
 import parseSelector from "postcss-selector-parser";
 
 export const generateCssModuleType = async (

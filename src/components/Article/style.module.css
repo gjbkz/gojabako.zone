@@ -42,6 +42,13 @@
 		outline: 0.5em solid var(--gjBackgroundColor);
 	}
 
+	& h2 + h3,
+	& h3 + h4,
+	& h4 + h5,
+	& h5 + h6 {
+		margin-block-start: 0;
+	}
+
 	& h2 {
 		font-size: 120%;
 		font-weight: 600;
@@ -63,13 +70,6 @@
 	& h6 {
 		margin-block-start: 2em;
 		margin-block-end: 0.5em;
-	}
-
-	& h2 + h3,
-	& h3 + h4,
-	& h4 + h5,
-	& h5 + h6 {
-		margin-block-start: 0;
 	}
 
 	& summary {
@@ -356,12 +356,10 @@
 		inline-size: 100%;
 		margin-block-end: 1em;
 
-		/* stylelint-disable-next-line no-descending-specificity */
 		& > * {
 			inline-size: var(--gjBaseWidth);
 			margin-inline: auto;
 
-			/* stylelint-disable-next-line no-descending-specificity */
 			&:last-child {
 				margin-block-end: 0;
 			}
@@ -378,7 +376,6 @@
 			color: var(--gjColorLink);
 			text-decoration: underline;
 
-			/* stylelint-disable-next-line no-descending-specificity */
 			& + * {
 				margin-block-start: 1em;
 			}

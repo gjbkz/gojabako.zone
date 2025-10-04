@@ -1,7 +1,7 @@
 import type { StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { ZoomSlider } from ".";
 import { StoryView } from "../StoryView";
+import { ZoomSlider } from ".";
 
 const SampleApp = () => {
 	const min = 0.1;

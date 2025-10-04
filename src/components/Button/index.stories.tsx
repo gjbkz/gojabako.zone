@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react";
-import { PrimaryButton, SecondaryButton, TextButton } from ".";
 import { StoryView } from "../StoryView";
+import { PrimaryButton, SecondaryButton, TextButton } from ".";
 
 const buttons = {
 	Primary: PrimaryButton,

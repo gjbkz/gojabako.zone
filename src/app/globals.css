@@ -36,15 +36,10 @@
 :root {
 	--gj1px: 1px;
 	--gjBaseWidth: 627px;
-	/* stylelint-disable-next-line unit-allowed-list */
 	--gjBasePadding: 0.8rem;
-	/* stylelint-disable-next-line unit-allowed-list */
 	--gjBaseFullWidth: calc(100vw - var(--gjBasePadding) * 2);
-	/* stylelint-disable-next-line unit-allowed-list */
 	--gjHeaderHeight: 2.4rem;
-	/* stylelint-disable-next-line unit-allowed-list */
 	--gjBorderRadius: 0.2rem;
-	/* stylelint-disable-next-line unit-allowed-list */
 	--gjFullScreenAvailableHeight: calc(100vh - var(--gjHeaderHeight));
 	--gjGray0: #fff;
 	--gjGray1: #f8fafc;
@@ -115,7 +110,6 @@
 	color: var(--gjColorText1);
 	background-color: var(--gjColorBackground);
 
-	/* stylelint-disable-next-line unit-allowed-list */
 	@media (width <= 651px) {
 		--gjBaseWidth: var(--gjBaseFullWidth);
 	}

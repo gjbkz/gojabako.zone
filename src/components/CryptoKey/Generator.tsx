@@ -3,8 +3,8 @@ import type { FormEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Buttons, PrimaryButton } from "../Button";
 import { Form } from "../Form";
-import { CryptoKeyView } from "./View";
 import { generateKeyPair } from "./util.ts";
+import { CryptoKeyView } from "./View";
 
 export const CryptoKeyGenerator = () => {
 	const [error, setError] = useState<Error | null>(null);

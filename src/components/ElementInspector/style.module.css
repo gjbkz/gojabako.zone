@@ -2,14 +2,18 @@
 	--gjSize: 1em;
 	--gjSize2: calc(var(--gjSize) * 2);
 	--gjColor: var(--gjGray1);
-	background-image: linear-gradient(45deg, var(--gjColor) 26%, transparent 26%),
+	background-image:
+		linear-gradient(45deg, var(--gjColor) 26%, transparent 26%),
 		linear-gradient(225deg, var(--gjColor) 26%, transparent 26%),
 		linear-gradient(45deg, var(--gjColor) 26%, transparent 26%),
 		linear-gradient(225deg, var(--gjColor) 26%, transparent 26%);
 	background-size: var(--gjSize2) var(--gjSize2);
 	background-repeat: repeat;
-	background-position: 0% 0, calc(0% + var(--gjSize)) var(--gjSize),
-		calc(0% + var(--gjSize)) var(--gjSize), calc(0% + var(--gjSize2)) 0;
+	background-position:
+		0% 0,
+		calc(0% + var(--gjSize)) var(--gjSize),
+		calc(0% + var(--gjSize)) var(--gjSize),
+		calc(0% + var(--gjSize2)) 0;
 	box-shadow: 0 0 0 1px var(--gjGray4);
 }
 

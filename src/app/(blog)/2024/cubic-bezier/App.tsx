@@ -2,6 +2,7 @@
 import type { Nominal } from "@nlib/typing";
 import {
 	type CSSProperties,
+	createContext,
 	type Dispatch,
 	type PropsWithChildren,
 	type ChangeEvent as ReactChangeEvent,
@@ -9,7 +10,6 @@ import {
 	type ReactNode,
 	type PointerEvent as ReactPointerEvent,
 	type SVGAttributes,
-	createContext,
 	useCallback,
 	useContext,
 	useEffect,
@@ -405,7 +405,9 @@ const ControlPointHandle = ({ index }: { index: ControlPointIndex }) => {
 				data-index={index}
 			/>
 			{!noControl && (
+				// biome-ignore lint/a11y/useSemanticElements: SVGなので
 				<circle
+					role="button"
 					cx={r(x)}
 					cy={r(y)}
 					r={r(24 * pxScale)}
@@ -613,7 +615,12 @@ const RotatingRect = ({
 	y,
 	times,
 	phase,
-}: { x: number; y: number; times: number; phase: number }) => {
+}: {
+	x: number;
+	y: number;
+	times: number;
+	phase: number;
+}) => {
 	const width = 20;
 	const height = 10;
 	const radius = 3;
@@ -636,7 +643,13 @@ const ScalingRect = ({
 	rx,
 	ry,
 	phase,
-}: { x: number; y: number; rx: number; ry: number; phase: number }) => {
+}: {
+	x: number;
+	y: number;
+	rx: number;
+	ry: number;
+	phase: number;
+}) => {
 	const width = 20 * (1 + phase * rx);
 	const height = 10 * (1 + phase * ry);
 	const radius = 3;
@@ -656,7 +669,11 @@ const ScalingCircle = ({
 	x,
 	y,
 	phase,
-}: { x: number; y: number; phase: number }) => {
+}: {
+	x: number;
+	y: number;
+	phase: number;
+}) => {
 	return <circle cx={x} cy={y} r={10 * (0.5 + phase)} />;
 };
 
@@ -666,7 +683,13 @@ const MovingRect = ({
 	dx,
 	dy,
 	phase,
-}: { x: number; y: number; dx: number; dy: number; phase: number }) => {
+}: {
+	x: number;
+	y: number;
+	dx: number;
+	dy: number;
+	phase: number;
+}) => {
 	const width = 20;
 	const height = 10;
 	const radius = 3;

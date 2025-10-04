@@ -1,7 +1,7 @@
 "use client";
 import type { MouseEvent } from "react";
 import { useCallback } from "react";
-import { IconClass, classnames } from "../../util/classnames.ts";
+import { classnames, IconClass } from "../../util/classnames.ts";
 import type { LogSliderProps } from "../LogSlider";
 import { LogSlider, toLinearValue } from "../LogSlider";
 import * as css from "./style.module.css";

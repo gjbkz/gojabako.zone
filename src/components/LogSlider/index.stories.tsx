@@ -5,8 +5,8 @@ import {
 	type HTMLAttributes,
 	useState,
 } from "react";
-import { LogSlider } from ".";
 import { StoryView } from "../StoryView";
+import { LogSlider } from ".";
 
 const values = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024];
 const min = values[0];

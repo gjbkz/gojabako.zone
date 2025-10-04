@@ -6,6 +6,7 @@ import * as g4 from "../LogSlider/index.stories.tsx";
 import * as g5 from "../StoryView/index.stories.tsx";
 import * as g6 from "../Toggle/index.stories.tsx";
 import * as g7 from "../ZoomSlider/index.stories.tsx";
+
 type Stories = Record<string, StoryObj>;
 export const storyGroups = new Map<string, Stories>();
 storyGroups.set("Button", g1 as Stories);

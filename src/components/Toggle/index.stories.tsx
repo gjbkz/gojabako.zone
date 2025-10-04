@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react";
-import { Toggle } from ".";
 import { StoryView } from "../StoryView";
+import { Toggle } from ".";
 
 export const Default: StoryObj = {
 	render: () => (

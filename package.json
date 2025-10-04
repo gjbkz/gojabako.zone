@@ -23,9 +23,7 @@
 		"build:next": "next build",
 		"pageList": "node --import=@nlib/tsm src/cli/pageList.ts",
 		"start": "next start",
-		"lint": "run-s lint:*",
-		"lint:biome": "npx @biomejs/biome check",
-		"lint:css": "stylelint 'src/**/*.css'",
+		"lint": "npx @biomejs/biome check",
 		"encrypt-env": "dotenvx encrypt"
 	},
 	"dependencies": {
@@ -76,12 +74,10 @@
 		]
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
+		"@biomejs/biome": "2.2.5",
 		"@biomejs/js-api": "0.7.1",
 		"@biomejs/wasm-nodejs": "1.9.4",
 		"@nlib/githooks": "0.2.2",
-		"@playwright/test": "1.52.0",
-		"stylelint": "16.19.1",
-		"stylelint-config-recommended": "15.0.0"
+		"@playwright/test": "1.52.0"
 	}
 }

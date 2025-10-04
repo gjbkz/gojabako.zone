@@ -1,8 +1,8 @@
 "use client";
 import type { Story } from "@storybook/react";
 import { StoryView } from "../StoryView";
-import { StorybookNav } from "./Nav";
 import { storyGroups } from "./all.ts";
+import { StorybookNav } from "./Nav";
 import * as css from "./style.module.css";
 
 interface StorybookProps {

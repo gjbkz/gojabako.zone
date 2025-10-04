@@ -1,4 +1,5 @@
 import type { Author } from "next/dist/lib/metadata/types/metadata-types";
+
 const baseUrl = new URL("https://gojabako.zone/");
 const author: Author = {
 	name: "伊藤 慶 - Kei Ito",

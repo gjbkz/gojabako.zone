@@ -1,7 +1,7 @@
 import { listCodePoints } from "@nlib/typing";
 import type { StoryObj } from "@storybook/react";
-import { DataViewer } from ".";
 import { StoryView } from "../StoryView";
+import { DataViewer } from ".";
 
 type Story = StoryObj<typeof DataViewer>;
 

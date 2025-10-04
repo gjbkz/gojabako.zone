@@ -2,14 +2,14 @@
 import type { ValueOf } from "@nlib/typing";
 import { useSearchParams } from "next/navigation";
 import {
-	type CSSProperties,
 	type ChangeEvent,
+	type CSSProperties,
+	createContext,
 	type Dispatch,
 	Fragment,
 	type PropsWithChildren,
-	type SVGAttributes,
 	type SetStateAction,
-	createContext,
+	type SVGAttributes,
 	useCallback,
 	useContext,
 	useEffect,
@@ -21,7 +21,7 @@ import { useIsInView } from "../../../../components/use/IsInView";
 import { useRect } from "../../../../components/use/Rect.ts";
 import { decodeCellList, encodeCellList } from "../../../../util/cellList";
 import { clamp } from "../../../../util/clamp";
-import { IconClass, classnames } from "../../../../util/classnames.ts";
+import { classnames, IconClass } from "../../../../util/classnames.ts";
 import { getCurrentUrl } from "../../../../util/getCurrentUrl";
 import * as css from "./style.module.css";
 
@@ -1004,9 +1004,7 @@ const DList = ({ edges, partsCount, maxPartsCount }: DListProps) => {
 							)}
 							style={indexStyle}
 						/>
-						<code className={classnames(!d && css.empty)} tabIndex={0}>
-							{d}
-						</code>
+						<code className={classnames(!d && css.empty)}>{d}</code>
 					</Fragment>
 				);
 			})}

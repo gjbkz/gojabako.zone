@@ -3,7 +3,7 @@ import type {
 	HTMLAttributes,
 	PropsWithChildren,
 } from "react";
-import { IconClass, classnames } from "../../util/classnames.ts";
+import { classnames, IconClass } from "../../util/classnames.ts";
 import * as css from "./style.module.css";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -22,7 +22,9 @@ const Button = ({
 		className={classnames(
 			css.button,
 			icon && css.icon,
-			state && css[state],
+			state === "active" && css.active,
+			state === "focus" && css.focus,
+			state === "hover" && css.hover,
 			props.className,
 		)}
 	>

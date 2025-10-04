@@ -1,4 +1,4 @@
-import { IconClass, classnames } from "../../../../util/classnames";
+import { classnames, IconClass } from "../../../../util/classnames";
 import { gridArea } from "../../../../util/gridArea";
 import { listEnvTestEntries } from "../../../../util/testEnv";
 import { MathRef } from "./MathRef";

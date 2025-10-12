@@ -4,13 +4,16 @@ import { pageList } from "../../util/pageList.ts";
 import { site } from "../../util/site.ts";
 
 export const GET = () => {
-	return new Response(encodeToUint8Array(selialize()), {
-		status: HttpStatusCode.OK,
-		headers: {
-			"content-type": "application/xml; charset=utf-8",
-			"cache-control": "max-age=10800",
+	return new Response(
+		new Blob([encodeToUint8Array(selialize()) as ArrayBufferView<ArrayBuffer>]),
+		{
+			status: HttpStatusCode.OK,
+			headers: {
+				"content-type": "application/xml; charset=utf-8",
+				"cache-control": "max-age=10800",
+			},
 		},
-	});
+	);
 };
 
 const selialize = function* () {

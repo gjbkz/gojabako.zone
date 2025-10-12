@@ -39,7 +39,7 @@ export const Default: StoryObj = {
 		<StoryView.Gallery>
 			<StoryView.Heading>{LogSlider.name}</StoryView.Heading>
 			<StoryView.Rows
-				rows={values.map((v) => [v, v])}
+				rows={values.map<[number, number]>((v) => [v, v])}
 				render={LogSliderSample}
 				style={dlStyle}
 				cellProps={cellProps}

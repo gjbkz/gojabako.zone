@@ -3,7 +3,6 @@ import { writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { watch } from "chokidar";
 import { componentsDir, rootDir } from "../util/node/directories.ts";
-import { formatCode } from "../util/node/formatCode.ts";
 import { walkFiles } from "../util/node/walkFiles.ts";
 import { noop } from "../util/noop.ts";
 
@@ -19,7 +18,7 @@ const onError = (error: unknown) => {
 
 const generate = async () => {
 	let code = "";
-	code += "import type { StoryObj } from '@storybook/react';";
+	code += 'import type { StoryObj } from "@storybook/react";\n';
 	let count = 0;
 	const groupNames = new Map<string, string>();
 	for (const filePath of [...storyFiles].sort((a, b) => (a < b ? -1 : 1))) {
@@ -27,17 +26,14 @@ const generate = async () => {
 		const name = `g${++count}`;
 		groupNames.set(relativePath.slice(0, -storySuffix.length), name);
 		const source = `../${relativePath}`;
-		code += `import * as ${name} from '${source}';`;
+		code += `import * as ${name} from "${source}";\n`;
 	}
-	code += "type Stories = Record<string, StoryObj>;";
-	code += "export const storyGroups = new Map<string, Stories>();";
+	code += "\ntype Stories = Record<string, StoryObj>;\n";
+	code += "export const storyGroups = new Map<string, Stories>();\n";
 	for (const [relativePath, name] of groupNames) {
-		code += `storyGroups.set('${relativePath}', ${name} as Stories);`;
+		code += `storyGroups.set("${relativePath}", ${name} as Stories);\n`;
 	}
-	await writeFile(
-		dest,
-		await formatCode(code, { filePath: fileURLToPath(dest) }),
-	);
+	await writeFile(dest, code);
 	console.info(
 		`${cliName}: Generated ${dest.pathname.slice(rootDir.pathname.length)}`,
 	);

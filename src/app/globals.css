@@ -27,8 +27,11 @@
 	stroke-linejoin: round;
 
 	@media (prefers-reduced-motion: reduce) {
+		/* biome-ignore lint/complexity/noImportantStyles: アクセシビリティ用 */
 		animation-duration: 0.01ms !important;
+		/* biome-ignore lint/complexity/noImportantStyles: アクセシビリティ用 */
 		animation-iteration-count: 1 !important;
+		/* biome-ignore lint/complexity/noImportantStyles: アクセシビリティ用 */
 		transition-duration: 0.01ms !important;
 	}
 }

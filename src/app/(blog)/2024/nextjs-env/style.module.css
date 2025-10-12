@@ -46,6 +46,14 @@ figure > .wrapper {
 			font-size: 120%;
 		}
 
+		&.odd {
+			background-color: var(--gjBlue0);
+		}
+
+		&.even {
+			background-color: var(--gjRed0);
+		}
+
 		&.heading {
 			background-color: var(--gjGray2);
 
@@ -85,14 +93,6 @@ figure > .wrapper {
 			&.even {
 				background-color: var(--gjRed1);
 			}
-		}
-
-		&.odd {
-			background-color: var(--gjBlue0);
-		}
-
-		&.even {
-			background-color: var(--gjRed0);
 		}
 	}
 }

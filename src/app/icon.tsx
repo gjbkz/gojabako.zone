@@ -16,7 +16,7 @@ export default function Icon() {
 				justifyContent: "center",
 			}}
 		>
-			{/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
+			{/* biome-ignore lint/a11y/noSvgWithoutTitle: tbw */}
 			<svg viewBox={site.logo.viewBox.join(" ")} width={size.width}>
 				<path d={site.logo.d} fill="#1e293b" />
 			</svg>

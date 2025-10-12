@@ -32,11 +32,16 @@ export class OtelLogExporter implements LogRecordExporter {
 		logs: Array<ReadableLogRecord>,
 		resultCallback: (result: ExportResult) => void,
 	): void {
-		const { endpoint, commonHeaders } = this;
+		const endpoint = this.endpoint;
+		const commonHeaders = this.commonHeaders;
 		if (endpoint && commonHeaders) {
 			const promise = fetch(endpoint, {
 				method: "POST",
-				body: JsonLogsSerializer.serializeRequest(logs),
+				body: new Blob([
+					JsonLogsSerializer.serializeRequest(
+						logs,
+					) as ArrayBufferView<ArrayBuffer>,
+				]),
 				headers: new Headers(commonHeaders),
 			})
 				.then((res) => handleResponse(resultCallback, res))

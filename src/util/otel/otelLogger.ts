@@ -21,8 +21,8 @@ otelWorkers.add(logExporter);
 const loggerProvider = new LoggerProvider({
 	resource: otelResource,
 	logRecordLimits: {},
+	processors: [new SimpleLogRecordProcessor(logExporter)],
 });
 otelWorkers.add(loggerProvider);
-loggerProvider.addLogRecordProcessor(new SimpleLogRecordProcessor(logExporter));
 export const otelLogger = loggerProvider.getLogger("app");
 otelLogger.emit({ body: "started: otel" });

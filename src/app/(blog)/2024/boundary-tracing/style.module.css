@@ -105,11 +105,9 @@
 			word-break: break-all;
 		}
 
-		&.empty {
-			&::before {
-				content: "Empty";
-				opacity: 0;
-			}
+		&.empty::before {
+			content: "Empty";
+			opacity: 0;
 		}
 	}
 }

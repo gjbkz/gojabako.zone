@@ -18,7 +18,7 @@ const onError = (error: unknown) => {
 
 const generate = async () => {
 	let code = "";
-	code += "import type { StoryObj } from '@storybook/react';\n";
+	code += 'import type { StoryObj } from "@storybook/react";\n';
 	let count = 0;
 	const groupNames = new Map<string, string>();
 	for (const filePath of [...storyFiles].sort((a, b) => (a < b ? -1 : 1))) {
@@ -26,12 +26,12 @@ const generate = async () => {
 		const name = `g${++count}`;
 		groupNames.set(relativePath.slice(0, -storySuffix.length), name);
 		const source = `../${relativePath}`;
-		code += `import * as ${name} from '${source}';\n`;
+		code += `import * as ${name} from "${source}";\n`;
 	}
 	code += "\ntype Stories = Record<string, StoryObj>;\n";
 	code += "export const storyGroups = new Map<string, Stories>();\n";
 	for (const [relativePath, name] of groupNames) {
-		code += `storyGroups.set('${relativePath}', ${name} as Stories);\n`;
+		code += `storyGroups.set("${relativePath}", ${name} as Stories);\n`;
 	}
 	await writeFile(dest, code);
 	console.info(

@@ -19,6 +19,7 @@
 
 .controller {
 	position: fixed;
+	/* biome-ignore lint/complexity/noImportantStyles: tbw */
 	inline-size: max-content !important;
 	inset-block-start: calc(var(--gjHeaderHeight) + 1em);
 	inset-inline-end: 1em;

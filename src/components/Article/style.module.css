@@ -18,10 +18,15 @@
 	}
 
 	& :global(.sr-only) {
+		/* biome-ignore lint/complexity/noImportantStyles: アクセシビリティ用 */
 		position: absolute !important;
+		/* biome-ignore lint/complexity/noImportantStyles: アクセシビリティ用 */
 		margin: 0 !important;
+		/* biome-ignore lint/complexity/noImportantStyles: アクセシビリティ用 */
 		padding: 0 !important;
+		/* biome-ignore lint/complexity/noImportantStyles: アクセシビリティ用 */
 		block-size: 0 !important;
+		/* biome-ignore lint/complexity/noImportantStyles: アクセシビリティ用 */
 		overflow: hidden !important;
 	}
 
@@ -209,12 +214,8 @@
 			}
 		}
 
-		&:hover {
-			& > figcaption {
-				& > :global(.fragment-ref) {
-					opacity: 1;
-				}
-			}
+		&:hover > figcaption > :global(.fragment-ref) {
+			opacity: 1;
 		}
 
 		&:global(.caption) {

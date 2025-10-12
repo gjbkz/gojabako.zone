@@ -16,18 +16,16 @@ export const PageLink = ({ page, showDescription }: PageLinkProps) => {
 	const isUpdated =
 		getDateString(page.publishedAt) !== getDateString(page.updatedAt);
 	return (
-		<>
-			<Link href={page.path} className={css.container}>
-				<span>{page.title.join("")}</span>
-				<PageDate dateTime={publishedAt} suffix="公開" />
-				{isUpdated && (
-					<PageDate dateTime={page.updatedAt} suffix="更新" bracket />
-				)}
-				{showDescription && page.description && (
-					<span className={css.description}>{page.description}</span>
-				)}
-			</Link>
-		</>
+		<Link href={page.path} className={css.container}>
+			<span>{page.title.join("")}</span>
+			<PageDate dateTime={publishedAt} suffix="公開" />
+			{isUpdated && (
+				<PageDate dateTime={page.updatedAt} suffix="更新" bracket />
+			)}
+			{showDescription && page.description && (
+				<span className={css.description}>{page.description}</span>
+			)}
+		</Link>
 	);
 };
 

@@ -739,20 +739,18 @@ const TargetCell = ({ cell }: { cell: Cell | null }) => {
 	}
 	const isDeletion = cells.some((c) => isSameCell(c, cell));
 	return (
-		<>
-			<rect
-				x={r(cell[0])}
-				y={r(cell[1])}
-				width={1}
-				height={1}
-				className={css.target}
-				style={{ strokeWidth: 4 * dpx }}
-			>
-				<title>
-					({cell.join(",")})を{isDeletion ? "削除" : "追加"}
-				</title>
-			</rect>
-		</>
+		<rect
+			x={r(cell[0])}
+			y={r(cell[1])}
+			width={1}
+			height={1}
+			className={css.target}
+			style={{ strokeWidth: 4 * dpx }}
+		>
+			<title>
+				({cell.join(",")})を{isDeletion ? "削除" : "追加"}
+			</title>
+		</rect>
 	);
 };
 

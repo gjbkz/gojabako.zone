@@ -78,6 +78,6 @@
 		"@biomejs/js-api": "0.7.1",
 		"@biomejs/wasm-nodejs": "1.9.4",
 		"@nlib/githooks": "0.2.2",
-		"@playwright/test": "1.56.0"
+		"@playwright/test": "1.56.1"
 	}
 }

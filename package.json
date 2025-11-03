@@ -58,7 +58,7 @@
 		"rehype-slug": "6.0.0",
 		"remark-gfm": "4.0.1",
 		"remark-math": "6.0.0",
-		"sass": "1.93.2",
+		"sass": "1.93.3",
 		"sharp": "0.34.4",
 		"typescript": "5.9.3",
 		"unist-util-find": "3.0.0",

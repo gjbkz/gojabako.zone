@@ -93,7 +93,7 @@ const logRequest = (request: NextRequest) => {
 	});
 };
 
-export const middleware = async (request: NextRequest) => {
+export const proxy = async (request: NextRequest) => {
 	console.info(`${request.method} ${request.nextUrl.href}`);
 	for (const handler of handlers) {
 		if (handler.isResponsibleFor(request)) {

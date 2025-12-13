@@ -11,9 +11,8 @@ declare module "@storybook/react" {
 		render?: ArgsStoryFn<ReactRenderer<P>, []>;
 	}
 
-	export type StoryObj<C = ComponentType> = C extends ComponentType<infer P>
-		? Story<P>
-		: never;
+	export type StoryObj<C = ComponentType> =
+		C extends ComponentType<infer P> ? Story<P> : never;
 }
 
 declare module "*.svg" {

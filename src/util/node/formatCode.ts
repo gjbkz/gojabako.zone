@@ -13,5 +13,5 @@ export const formatCode = async (
 	if (biome === null) {
 		biome = await Biome.create({ distribution: Distribution.NODE });
 	}
-	return biome.formatContent(code, options).content;
+	return biome.formatContent(0, code, options).content;
 };

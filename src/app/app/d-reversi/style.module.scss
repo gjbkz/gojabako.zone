@@ -1,0 +1,7 @@
+.game {
+  block-size: calc(100vh - var(--gjHeaderHeight) - 8em);
+
+  & + article {
+    padding-block-start: 0;
+  }
+}

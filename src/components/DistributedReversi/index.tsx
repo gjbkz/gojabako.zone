@@ -2,11 +2,11 @@
 import { createStore, Provider } from "jotai";
 import { useSearchParams } from "next/navigation";
 import type { HTMLAttributes } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { classnames } from "../../util/classnames.ts";
 import { getCurrentUrl } from "../../util/getCurrentUrl.ts";
 import { DRBoard } from "./Board";
-import { decodeCellList } from "./cellList.ts";
+import { decodeCellList, encodeCellList } from "./cellList.ts";
 import { cellAtom, cellListAtom } from "./jotai.app.ts";
 import { DRMenu } from "./Menu";
 import * as style from "./style.module.scss";
@@ -16,6 +16,19 @@ import { defaultDRCell, toDRCellId } from "./util.ts";
 export const DistributedReversi = (props: HTMLAttributes<HTMLElement>) => {
 	getCurrentUrl.defaultSearchParams = useSearchParams();
 	const [store] = useState(createInitialStore);
+	// cellListAtom の変化を URL の ?c= に反映する
+	useEffect(() => {
+		return store.sub(cellListAtom, () => {
+			const cellList = store.get(cellListAtom);
+			if (cellList.size === 0) {
+				return;
+			}
+			const encoded = encodeCellList(cellList);
+			const url = new URL(location.href);
+			url.searchParams.set("c", encoded);
+			history.replaceState(null, "", url.toString());
+		});
+	}, [store]);
 	return (
 		<section
 			{...props}

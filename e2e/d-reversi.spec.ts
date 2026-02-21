@@ -187,4 +187,39 @@ test.describe("分散型リバーシ", () => {
 			});
 		});
 	});
+
+	test.describe("URL永続化", () => {
+		test("盤面変更が URL の ?c= に反映される", async ({ page }) => {
+			// 編集モードで中央セルを削除
+			await page.getByLabel("編集モード").click();
+			const board = page.getByRole("img", { name: "DRBoard" });
+			await board.click();
+			await expect(page.locator("[id^='cell']")).toHaveCount(24, {
+				timeout: 1000,
+			});
+			// URL に ?c= が追加されているはず
+			const url = new URL(page.url());
+			expect(url.searchParams.has("c")).toBe(true);
+		});
+
+		test("?c= 付き URL で盤面が復元される", async ({ page }) => {
+			// まず通常ロードで盤面を変更して URL を取得
+			await page.getByLabel("編集モード").click();
+			const board = page.getByRole("img", { name: "DRBoard" });
+			await board.click();
+			await expect(page.locator("[id^='cell']")).toHaveCount(24, {
+				timeout: 1000,
+			});
+			const modifiedUrl = page.url();
+			expect(new URL(modifiedUrl).searchParams.has("c")).toBe(true);
+
+			// 変更後の URL でリロード
+			await page.goto(modifiedUrl);
+			await page.waitForSelector(cellG(-2, -2));
+			// 24 セルで復元されているはず
+			await expect(page.locator("[id^='cell']")).toHaveCount(24, {
+				timeout: 2000,
+			});
+		});
+	});
 });

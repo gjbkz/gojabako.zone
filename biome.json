@@ -1,7 +1,14 @@
 {
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"files": {
-		"includes": ["**", "!.cache", "!.next", "!.vercel", "!.claude"],
+		"includes": [
+			"**",
+			"!.cache",
+			"!.next",
+			"!.vercel",
+			"!.claude",
+			"!test-results"
+		],
 		"ignoreUnknown": true
 	},
 	"css": {

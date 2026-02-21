@@ -114,7 +114,7 @@ RunnerRole: AWS::IAM::Role
 RunnerInstanceProfile: AWS::IAM::InstanceProfile
 ```
 
-スタックのパラメータでセキュリティグループidを渡して[SecurityGroupIngress](https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group-ingress.html)で作成した２つのElastic IPからの接続を許可します。「どこを許可するのか」は下の詰まったところで後述します。
+スタックのパラメータでセキュリティグループidを渡して[SecurityGroupIngress](https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group-ingress.html)で作成した2つのElastic IPからの接続を許可します。「どこを許可するのか」は下の詰まったところで後述します。
 
 ## 詰まったところ
 
@@ -153,7 +153,7 @@ Elastic IPの関連付けはインスタンスの作成後になります。Bast
 
 ## GitLabとの通信内容
 
-ジョブの中で特別なことをしない限りGitLabへの通信は以下の４種類です。
+ジョブの中で特別なことをしない限りGitLabへの通信は以下の4種類です。
 
 |    送信元    | ポート | 内容                  |
 | :----------: | :----: | :-------------------- |

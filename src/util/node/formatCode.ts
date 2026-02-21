@@ -1,20 +1,18 @@
+import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import {
-	Biome,
-	Distribution,
-	type FormatContentOptions,
-} from "@biomejs/js-api";
 import { rootDir } from "./directories.ts";
 
-let biome: Biome | null = null;
 export const formatCode = async (
 	code: string,
-	options: FormatContentOptions,
+	options: { filePath: string },
 ): Promise<string> => {
-	if (biome === null) {
-		biome = await Biome.create({ distribution: Distribution.NODE });
+	const result = spawnSync(
+		"node_modules/.bin/biome",
+		["format", `--stdin-file-path=${options.filePath}`],
+		{ input: code, encoding: "utf8", cwd: fileURLToPath(rootDir) },
+	);
+	if (result.status !== 0) {
+		throw new Error(`Biome format failed: ${result.stderr}`);
 	}
-	const projectPath = fileURLToPath(rootDir);
-	const { projectKey } = biome.openProject(projectPath);
-	return biome.formatContent(projectKey, code, options).content;
+	return result.stdout;
 };

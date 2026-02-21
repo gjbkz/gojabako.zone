@@ -46,37 +46,34 @@ export const DRBoard = () => {
 
 const useOnClick = () =>
 	useAtomCallback(
-		useCallback(
-			(get, set) => (event: MouseEvent) => {
-				event.preventDefault();
-				event.stopPropagation();
-				if (get(draggingAtom)) {
-					return;
+		useCallback((get, set, event: MouseEvent) => {
+			event.preventDefault();
+			event.stopPropagation();
+			if (get(draggingAtom)) {
+				return;
+			}
+			set(selectedCellsAtom, new Set());
+			if (get(editModeAtom)) {
+				const [x0, y0, , , z] = get(viewportAtom);
+				const e = event.nativeEvent as PointerEvent;
+				const cellId = toDRCellId(e.offsetX / z + x0, -e.offsetY / z - y0);
+				if (get(cellAtom(cellId))) {
+					set(cellAtom(cellId), null);
+					set(cellListAtom, (current: Set<DRCellId>) => {
+						const next = new Set(current);
+						next.delete(cellId);
+						return next;
+					});
+				} else {
+					set(cellAtom(cellId), defaultDRCell());
+					set(cellListAtom, (current: Set<DRCellId>) => {
+						const next = new Set(current);
+						next.add(cellId);
+						return next;
+					});
 				}
-				set(selectedCellsAtom, new Set());
-				if (get(editModeAtom)) {
-					const [x0, y0, , , z] = get(viewportAtom);
-					const e = event.nativeEvent as PointerEvent;
-					const cellId = toDRCellId(e.offsetX / z + x0, -e.offsetY / z - y0);
-					if (get(cellAtom(cellId))) {
-						set(cellAtom(cellId), null);
-						set(cellListAtom, (current: Set<DRCellId>) => {
-							const next = new Set(current);
-							next.delete(cellId);
-							return next;
-						});
-					} else {
-						set(cellAtom(cellId), defaultDRCell());
-						set(cellListAtom, (current: Set<DRCellId>) => {
-							const next = new Set(current);
-							next.add(cellId);
-							return next;
-						});
-					}
-				}
-			},
-			[],
-		),
+			}
+		}, []),
 	);
 
 const EditGuide = () => {

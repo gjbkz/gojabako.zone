@@ -1,9 +1,8 @@
 "use client";
 import { ensure, isFiniteNumber } from "@nlib/typing";
 import type { ChangeEvent, InputHTMLAttributes } from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { clamp } from "../../util/clamp.ts";
-import type { Range } from "../../util/range.ts";
 import { toLinearValue, toLogValue } from "./math.ts";
 
 export { toLinearValue, toLogValue } from "./math.ts";
@@ -27,32 +26,26 @@ export const LogSlider = ({
 	onChange: onChangeFn,
 	...props
 }: LogSliderProps) => {
-	const range = useMemo((): Range => [min, max], [min, max]);
-	const [ratio, setRatio] = useState(toLogValue(toNumber(defaultValue), range));
+	const [internalRatio, setInternalRatio] = useState(() =>
+		toLogValue(toNumber(rawValue ?? toNumber(defaultValue)), [min, max]),
+	);
+	const ratio =
+		rawValue !== undefined
+			? toLogValue(toNumber(rawValue), [min, max])
+			: internalRatio;
 	const onChange = useCallback(
 		(event: ChangeEvent<HTMLInputElement>) => {
-			setRatio(clamp(toNumber(event.currentTarget.value), 0, 1));
+			const newRatio = clamp(toNumber(event.currentTarget.value), 0, 1);
+			setInternalRatio(newRatio);
+			if (onChangeValue) {
+				onChangeValue(toLinearValue(newRatio, [min, max]));
+			}
 			if (onChangeFn) {
 				onChangeFn(event);
 			}
 		},
-		[onChangeFn],
+		[onChangeFn, onChangeValue, min, max],
 	);
-	// biome-ignore lint/correctness/useExhaustiveDependencies: rawValueは見ない
-	useEffect(() => {
-		if (onChangeValue) {
-			const diff = rawValue ? toLogValue(toNumber(rawValue), range) - ratio : 1;
-			if (0.001 < Math.abs(diff)) {
-				onChangeValue(toLinearValue(ratio, range));
-			}
-		}
-	}, [ratio, range, onChangeValue]);
-	useEffect(() => {
-		if (rawValue) {
-			const newRatio = toLogValue(toNumber(rawValue), range);
-			setRatio((prev) => (Math.abs(newRatio - prev) < 1e-9 ? prev : newRatio));
-		}
-	}, [rawValue, range]);
 	return (
 		<input
 			{...props}

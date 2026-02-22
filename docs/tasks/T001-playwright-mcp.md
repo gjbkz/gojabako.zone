@@ -37,9 +37,9 @@
 mkdir -p ~/.claude/chrome-profile
 
 # 2. Playwright MCPサーバーをlocaleスコープで登録
+# （--headedはデフォルトのため不要）
 claude mcp add --scope local playwright -- \
   npx @playwright/mcp@latest \
-  --headed \
   --browser chrome \
   --user-data-dir ~/.claude/chrome-profile
 ```
@@ -53,7 +53,6 @@ claude mcp add --scope local playwright -- \
       "command": "npx",
       "args": [
         "@playwright/mcp@latest",
-        "--headed",
         "--browser",
         "chrome",
         "--user-data-dir",
@@ -67,9 +66,9 @@ claude mcp add --scope local playwright -- \
 ## 現在のステータス
 
 - [x] 調査完了
-- [ ] セットアップ実行
-- [ ] 動作確認（`browser_navigate` でページ表示）
+- [x] セットアップ実行（`~/.claude/chrome-profile` 作成・MCPサーバー登録済み）
+- [x] 動作確認（`browser_navigate` で `http://localhost:3000` の表示を確認）
 
-## 次のアクション
+## 結果
 
-Claude Codeを再起動後、`browser_navigate` ツールで `http://localhost:3000` を開いて動作確認する。
+セットアップ完了。`browser_navigate` でページ操作・スナップショット取得が可能な状態になった。

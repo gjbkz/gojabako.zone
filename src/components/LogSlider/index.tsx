@@ -1,7 +1,7 @@
 "use client";
 import { ensure, isFiniteNumber } from "@nlib/typing";
 import type { ChangeEvent, InputHTMLAttributes } from "react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { clamp } from "../../util/clamp.ts";
 import { toLinearValue, toLogValue } from "./math.ts";
 

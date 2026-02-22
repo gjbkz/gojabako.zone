@@ -4,18 +4,13 @@ import type { ChangeEvent, InputHTMLAttributes } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { clamp } from "../../util/clamp.ts";
 import type { Range } from "../../util/range.ts";
+import { toLinearValue, toLogValue } from "./math.ts";
+
+export { toLinearValue, toLogValue } from "./math.ts";
 
 const toNumber = (value: ReadonlyArray<string> | number | string): number =>
 	ensure(Number(value), isFiniteNumber);
-const toLogValue = (value: number, [min, max]: Range): number => {
-	const logValue = Math.log(clamp(value, min, max));
-	const logMin = Math.log(min);
-	const logMax = Math.log(max);
-	return (logValue - logMin) / (logMax - logMin);
-};
-export const toLinearValue = (ratio: number, [min, max]: Range) => {
-	return min * Number((max / min) ** ratio);
-};
+
 export interface LogSliderProps
 	extends Omit<InputHTMLAttributes<HTMLInputElement>, "max" | "min" | "type"> {
 	min: number;
@@ -53,13 +48,10 @@ export const LogSlider = ({
 		}
 	}, [ratio, range, onChangeValue]);
 	useEffect(() => {
-		let frameId = 0;
 		if (rawValue) {
-			frameId = requestAnimationFrame(() => {
-				setRatio(toLogValue(toNumber(rawValue), range));
-			});
+			const newRatio = toLogValue(toNumber(rawValue), range);
+			setRatio((prev) => (Math.abs(newRatio - prev) < 1e-9 ? prev : newRatio));
 		}
-		return () => cancelAnimationFrame(frameId);
 	}, [rawValue, range]);
 	return (
 		<input

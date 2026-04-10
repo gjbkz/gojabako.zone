@@ -43,7 +43,7 @@
 		"chokidar": "5.0.0",
 		"hast-util-from-html": "2.0.3",
 		"hast-util-to-string": "3.0.1",
-		"jotai": "2.19.0",
+		"jotai": "2.19.1",
 		"kuromoji": "0.1.2",
 		"lowlight": "3.3.0",
 		"mdast-util-from-markdown": "2.0.3",

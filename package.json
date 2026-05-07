@@ -61,7 +61,7 @@
 		"remark-math": "6.0.0",
 		"sass": "1.99.0",
 		"sharp": "0.34.5",
-		"typescript": "5.9.3",
+		"typescript": "6.0.3",
 		"unist-util-find": "3.0.0",
 		"unist-util-visit": "5.1.0",
 		"vlq": "2.0.4"

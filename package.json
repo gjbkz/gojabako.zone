@@ -77,7 +77,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.4.12",
 		"@nlib/githooks": "0.2.2",
-		"@playwright/test": "1.60.0",
+		"@playwright/test": "1.61.1",
 		"baseline-browser-mapping": "2.10.38"
 	}
 }

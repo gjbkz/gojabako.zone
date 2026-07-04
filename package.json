@@ -39,7 +39,7 @@
 		"@types/kuromoji": "0.1.3",
 		"@types/node": "25.9.4",
 		"@types/react": "19.2.16",
-		"acorn": "8.16.0",
+		"acorn": "8.17.0",
 		"chokidar": "5.0.0",
 		"hast-util-from-html": "2.0.3",
 		"hast-util-to-string": "3.0.1",

@@ -51,7 +51,7 @@
 		"mdast-util-to-string": "4.0.0",
 		"next": "16.1.6",
 		"npm-run-all2": "9.0.2",
-		"postcss": "8.5.17",
+		"postcss": "8.5.20",
 		"postcss-selector-parser": "7.1.2",
 		"rehype-highlight": "7.0.2",
 		"rehype-katex": "7.0.1",

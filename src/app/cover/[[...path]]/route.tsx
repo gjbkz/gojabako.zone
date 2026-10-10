@@ -1,6 +1,7 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
-import type { NextRequest } from "next/server";
 import type { FontStyle, FontWeight } from "../../../util/fontFace.ts";
 import { listLines, measureTextWidth } from "../../../util/measureTextWidth.ts";
 import { pageList } from "../../../util/pageList.ts";
@@ -8,25 +9,34 @@ import { site } from "../../../util/site.ts";
 import type { PageData } from "../../../util/type.ts";
 
 interface FontOptions {
-	data: ArrayBuffer;
+	data: Buffer;
 	name: string;
 	weight: FontWeight;
 	style: FontStyle;
 	lang?: string;
 }
 
-export const runtime = "edge";
-const size = { width: 1200, height: 630 };
-const loadFont = async (
-	url: URL,
-	options: Omit<FontOptions, "data">,
-): Promise<FontOptions> => {
-	const res = await fetch(url);
-	return { ...options, data: await res.arrayBuffer() };
-};
+interface RouteContext {
+	params: Promise<{ path?: Array<string> }>;
+}
 
-export const GET = async (req: NextRequest) => {
-	const pagePath = req.nextUrl.pathname.slice(6);
+export const dynamicParams = false;
+const size = { width: 1200, height: 630 };
+const fontDir = join(process.cwd(), "public", "fonts", "noto-sans-jp");
+const loadFont = async (
+	fileName: string,
+	options: Omit<FontOptions, "data">,
+): Promise<FontOptions> => ({
+	...options,
+	data: await readFile(join(fontDir, fileName)),
+});
+
+export const generateStaticParams = () =>
+	pageList.map((page) => ({ path: page.path.split("/").filter(Boolean) }));
+
+export const GET = async (_req: Request, { params }: RouteContext) => {
+	const { path = [] } = await params;
+	const pagePath = `/${path.join("/")}`;
 	const page = pageList.find((p) => p.path === pagePath);
 	if (!page) {
 		notFound();
@@ -34,14 +44,16 @@ export const GET = async (req: NextRequest) => {
 	return new ImageResponse(<ImageComponent page={page} />, {
 		...size,
 		fonts: await Promise.all([
-			loadFont(
-				new URL("/fonts/noto-sans-jp/japanese-900-normal.woff", req.nextUrl),
-				{ name: "Noto Sans JP", style: "normal", weight: 900 },
-			),
-			loadFont(
-				new URL("/fonts/noto-sans-jp/japanese-700-normal.woff", req.nextUrl),
-				{ name: "Noto Sans JP", style: "normal", weight: 700 },
-			),
+			loadFont("japanese-900-normal.woff", {
+				name: "Noto Sans JP",
+				style: "normal",
+				weight: 900,
+			}),
+			loadFont("japanese-700-normal.woff", {
+				name: "Noto Sans JP",
+				style: "normal",
+				weight: 700,
+			}),
 		]),
 		// debug: true,
 	});

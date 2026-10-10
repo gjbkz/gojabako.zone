@@ -6,7 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 6
     concurrency:
-      group: site-availability-${{ github.ref }}
+      # Vercel はデプロイの ref にコミット SHA を入れるため github.ref は空になる。
+      # デプロイ単位でグループを分け、別 PR のデプロイ同士でキャンセルし合わないようにする。
+      group: site-availability-${{ github.event.deployment.environment }}-${{ github.event.deployment.sha }}
       cancel-in-progress: true
     steps:
     - uses: actions/checkout@v7

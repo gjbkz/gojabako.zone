@@ -34,7 +34,9 @@ export const SiteFooter = async (props: HTMLAttributes<HTMLElement>) => (
 			</div>
 			<div>
 				<div>©</div>
-				<Link href="/author">{site.author.name}</Link>
+				<Link href="/author" prefetch={false}>
+					{site.author.name}
+				</Link>
 				<div className={css.links}>
 					{links.map(({ Icon, href, title }) => (
 						<Link key={href} href={href} title={title} target="_blank">

@@ -18,11 +18,11 @@ export const SiteHeader = ({ fullWidth, ...props }: SiteHeaderProps) => (
 			props.className,
 		)}
 	>
-		<Link href="/">
+		<Link href="/" prefetch={false}>
 			<Logo className={css.logo} />
 			<span>{site.name}</span>
 		</Link>
-		<Link href="/author">
+		<Link href="/author" prefetch={false}>
 			<span>Kei Ito</span>
 		</Link>
 	</header>

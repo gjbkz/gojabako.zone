@@ -56,8 +56,12 @@ export class OtelLogExporter implements LogRecordExporter {
 		}
 	}
 
-	public async shutdown(): Promise<void> {
+	public async forceFlush(): Promise<void> {
 		await Promise.all([...this.promises]);
+	}
+
+	public async shutdown(): Promise<void> {
+		await this.forceFlush();
 	}
 }
 

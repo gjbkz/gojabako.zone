@@ -3,6 +3,8 @@ import { encodeToUint8Array } from "../../util/encodeToUint8Array.ts";
 import { pageList } from "../../util/pageList.ts";
 import { site } from "../../util/site.ts";
 
+export const dynamic = "force-static";
+
 export const GET = () => {
 	return new Response(
 		new Blob([encodeToUint8Array(selialize()) as ArrayBufferView<ArrayBuffer>]),

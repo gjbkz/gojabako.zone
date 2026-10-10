@@ -16,9 +16,9 @@ Parameters:
   NetlifyDomain:
     Type: String
     Description: Default domain of the Netlify deployment (e.g. xxx.netlify.app)
-  CloudRunDomain:
+  FirebaseDomain:
     Type: String
-    Description: Default domain of the Cloud Run service (e.g. xxx.a.run.app)
+    Description: Default domain of the Firebase Hosting site (e.g. xxx.web.app)
   AwsDomain:
     Type: String
     Description: Domain of the AWS deployment
@@ -82,8 +82,8 @@ Resources:
             CustomOriginConfig:
               OriginProtocolPolicy: https-only
               OriginSSLProtocols: [TLSv1.2]
-          - Id: cloudrun
-            DomainName: !Ref CloudRunDomain
+          - Id: firebase
+            DomainName: !Ref FirebaseDomain
             ConnectionAttempts: 1
             ConnectionTimeout: 2
             CustomOriginConfig:

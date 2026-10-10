@@ -31,6 +31,6 @@ jobs:
           HostedZoneId=${{ vars.FRONT_HOSTED_ZONE_ID }}
           VercelDomain=${{ vars.FRONT_VERCEL_DOMAIN }}
           NetlifyDomain=${{ vars.FRONT_NETLIFY_DOMAIN }}
-          CloudRunDomain=${{ vars.FRONT_CLOUDRUN_DOMAIN }}
+          FirebaseDomain=${{ vars.FRONT_FIREBASE_DOMAIN }}
           AwsDomain=${{ vars.FRONT_AWS_DOMAIN }}
           CloudFrontWeight=${{ inputs.cloudfront-weight }}

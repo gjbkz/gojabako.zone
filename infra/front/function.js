@@ -8,7 +8,7 @@ import cf from "cloudfront";
 const origins = [
 	{ originId: "vercel", label: "Vercel", weight: 1 },
 	{ originId: "netlify", label: "Netlify", weight: 1 },
-	{ originId: "cloudrun", label: "Cloud Run", weight: 1 },
+	{ originId: "firebase", label: "Firebase", weight: 1 },
 	{ originId: "aws", label: "AWS", weight: 1 },
 ];
 

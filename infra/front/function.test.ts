@@ -89,7 +89,7 @@ test("同じ訪問者は同じ主オリジンに振られ、/apphost はその�
 	const labels: Record<string, string> = {
 		vercel: "Vercel",
 		netlify: "Netlify",
-		cloudrun: "Cloud Run",
+		firebase: "Firebase",
 		aws: "AWS",
 	};
 	assert.equal(label, labels[groups[0].originIds[0].originId]);

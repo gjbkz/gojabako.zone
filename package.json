@@ -68,11 +68,17 @@
 	},
 	"renovate": {
 		"extends": [
-			"github>nlibjs/renovate-config"
+			"github>nlibjs/renovate-config",
+			"group:allNonMajor"
 		],
 		"ignoreDeps": [
 			"next"
-		]
+		],
+		"timezone": "Asia/Tokyo",
+		"schedule": [
+			"before 9am on monday"
+		],
+		"rebaseWhen": "conflicted"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.15",

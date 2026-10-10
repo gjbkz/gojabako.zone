@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import mdx from "@next/mdx";
 import { all } from "lowlight";
 import type { NextConfig } from "next";
@@ -50,6 +51,13 @@ const nextConfig: NextConfig = {
 			: {}),
 	},
 	webpack: (config, _options) => {
+		// MDX の remark/rehype プラグインを変えたときにビルドキャッシュを無効化する
+		if (config.cache?.buildDependencies) {
+			config.cache.buildDependencies.mdx = [
+				fileURLToPath(new URL("./src/unified/", import.meta.url)),
+				fileURLToPath(new URL("./src/util/rehype/", import.meta.url)),
+			];
+		}
 		config.module.rules.push(
 			...(function* () {
 				// https://react-svgr.com/docs/next/#usage

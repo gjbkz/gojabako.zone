@@ -1,0 +1,36 @@
+name: Front
+on:
+  workflow_dispatch:
+    inputs:
+      cloudfront-weight:
+        description: Weight of the Route 53 record that points at CloudFront (0 = not serving)
+        required: true
+        default: "0"
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+      - run: node infra/front/render.ts > front.yaml
+      - uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ secrets.AWS_FRONT_ROLE_ARN }}
+          aws-region: us-east-1
+      - run: >-
+          aws cloudformation deploy
+          --stack-name gojabako-front
+          --template-file front.yaml
+          --no-fail-on-empty-changeset
+          --parameter-overrides
+          HostedZoneId=${{ vars.FRONT_HOSTED_ZONE_ID }}
+          VercelDomain=${{ vars.FRONT_VERCEL_DOMAIN }}
+          NetlifyDomain=${{ vars.FRONT_NETLIFY_DOMAIN }}
+          CloudRunDomain=${{ vars.FRONT_CLOUDRUN_DOMAIN }}
+          AwsDomain=${{ vars.FRONT_AWS_DOMAIN }}
+          CloudFrontWeight=${{ inputs.cloudfront-weight }}

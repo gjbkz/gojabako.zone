@@ -26,6 +26,7 @@ const listItems = function* (currentPath: string): Generator<ReactNode> {
 					key={storyPath}
 					href={`/app/components/${storyPath}`}
 					className={classnames(active && css.active)}
+					prefetch={false}
 				>
 					{storyPath}
 				</Link>

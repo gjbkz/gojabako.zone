@@ -17,7 +17,10 @@ export default function Page() {
 						<h1>{site.name}</h1>
 					</header>
 					<p>
-						<Link href="/author">{site.author.name}</Link> のサイトです。
+						<Link href="/author" prefetch={false}>
+							{site.author.name}
+						</Link>{" "}
+						のサイトです。
 					</p>
 					<h2>最近公開したページ</h2>
 					<ul>{[...listRecentPages(6, "publishedAt")]}</ul>

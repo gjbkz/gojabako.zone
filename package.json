@@ -60,7 +60,7 @@
 		"remark-gfm": "4.0.1",
 		"remark-math": "6.0.0",
 		"sass": "1.105.1",
-		"sharp": "0.35.4",
+		"sharp": "0.35.5",
 		"typescript": "5.9.3",
 		"unist-util-find": "3.0.0",
 		"unist-util-visit": "5.1.0",

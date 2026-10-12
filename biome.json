@@ -8,7 +8,8 @@
 			"!.vercel",
 			"!.claude",
 			"!test-results",
-			"!**/*.svg"
+			"!**/*.svg",
+			"!src/fonts/webfonts.css"
 		],
 		"ignoreUnknown": true
 	},

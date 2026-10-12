@@ -132,6 +132,11 @@ pre {
 	overflow-wrap: anywhere;
 }
 
+.material-symbols-rounded {
+	font-size: inherit;
+	vertical-align: middle;
+}
+
 code {
 	white-space: pre-wrap;
 	font-family: var(--gjFontMonospace);

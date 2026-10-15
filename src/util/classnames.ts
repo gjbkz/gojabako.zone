@@ -18,3 +18,6 @@ const list = function* (entries: Array<ClassNameEntry>): Generator<string> {
 };
 
 export const IconClass = "material-symbols-rounded";
+
+/** コードブロックで URL のハッシュが指す行に付けるクラス */
+export const hashHitClassName = "hash-hit";

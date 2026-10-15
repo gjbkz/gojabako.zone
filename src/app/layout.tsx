@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import type { PropsWithChildren } from "react";
-import { HighlightHash } from "../components/HighlightHash";
 import { site } from "../util/site.ts";
 import "../fonts/webfonts.css";
 import "./globals.css";
@@ -19,7 +18,6 @@ export default function RootLayout({ children }: PropsWithChildren) {
 	return (
 		<html lang="ja">
 			<body>{children}</body>
-			<HighlightHash />
 		</html>
 	);
 }

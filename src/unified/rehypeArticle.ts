@@ -1,3 +1,4 @@
+import { createRequire } from "node:module";
 import type { Element, Node, Root } from "hast";
 import { find } from "unist-util-find";
 import { hasClass } from "../util/rehype/className.ts";
@@ -38,6 +39,14 @@ export const rehypeArticle = () => async (tree: Root, file: VFileLike) => {
 	return tree;
 };
 
+/**
+ * rehype-katex が HTML の生成に使う katex と同じ版の CSS。
+ * katex はバージョン間でクラス名が変わるので、別の katex から CSS を読むと表示が崩れます。
+ */
+const katexCssPath = createRequire(
+	createRequire(import.meta.url).resolve("rehype-katex"),
+).resolve("katex/dist/katex.min.css");
+
 /** 数式があるページだけで KaTeX の CSS を読み込みます。 */
 const insertKatexStyle = (tree: Root) => {
 	const katex = find<Element>(
@@ -45,6 +54,8 @@ const insertKatexStyle = (tree: Root) => {
 		(n: Element | Node) => isHastElement(n) && hasClass(n, "katex"),
 	);
 	if (katex) {
-		tree.children.unshift(createMdxEsm('import "katex/dist/katex.min.css";'));
+		tree.children.unshift(
+			createMdxEsm(`import ${JSON.stringify(katexCssPath)};`),
+		);
 	}
 };

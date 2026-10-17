@@ -9,7 +9,7 @@ Parameters:
     Default: gojabako.zone
   HostedZoneId:
     Type: AWS::Route53::HostedZone::Id
-    Description: Route 53 hosted zone of DomainName
+    Description: Route 53 hosted zone of DomainName (only for the certificate's DNS validation record)
   VercelDomain:
     Type: String
     Description: Default domain of the Vercel deployment (e.g. xxx.vercel.app)
@@ -22,26 +22,9 @@ Parameters:
   AwsDomain:
     Type: String
     Description: Domain of the AWS deployment
-  DnsMode:
-    Type: String
-    Default: weighted
-    AllowedValues: [weighted, failover]
-    Description: weighted while migrating from the existing weighted records, failover afterwards
-  CloudFrontWeight:
-    Type: Number
-    Default: 0
-    Description: (weighted) Weight of the record that points DomainName at CloudFront. 0 keeps traffic on the existing weighted records.
-  SecondaryARecords:
-    Type: CommaDelimitedList
-    Default: ""
-    Description: (failover) A record values of the secondary host that serves DomainName directly (e.g. Vercel's apex IP)
   LogRetentionInDays:
     Type: Number
     Default: 90
-
-Conditions:
-  IsWeighted: !Equals [!Ref DnsMode, weighted]
-  IsFailover: !Equals [!Ref DnsMode, failover]
 
 Resources:
   Certificate:
@@ -134,15 +117,10 @@ Resources:
               - EventType: viewer-request
                 FunctionARN: !GetAtt RouterFunction.FunctionMetadata.FunctionARN
 
-  # DnsMode=weighted（移行中）: 既存の加重レコード（各デプロイ先）と並ぶ加重レコード。
-  #   CloudFrontWeight を上げ、既存側の重みを 0 にすると切り替わる。戻すときは逆にする。
-  # DnsMode=failover（移行後）: A レコードはプライマリが CloudFront、セカンダリがデプロイ先 1 つ。
-  #   CloudFront の /health が落ちたら Route 53 がセカンダリを返す。
-  #   切り替える前に、CloudFront 以外の既存の加重レコードを消しておく（同じ名前・種類で加重とフェイルオーバーは混在できない）。
-  #   セカンダリのデプロイ先には DomainName の独自ドメイン設定を残しておく。
+  # Route 53 のフェイルオーバーレコード（Kei が手で管理）のプライマリに付けるヘルスチェック。
+  # /health は CloudFront Function が直接返すので、CloudFront 自体の死活だけを見る。
   FrontHealthCheck:
     Type: AWS::Route53::HealthCheck
-    Condition: IsFailover
     Properties:
       HealthCheckConfig:
         Type: HTTPS
@@ -154,54 +132,6 @@ Resources:
       HealthCheckTags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-front"
-  # 1 つの RecordSetGroup にまとめ、weighted → failover の入れ替えを 1 回の変更（アトミック）で行う。
-  Records:
-    Type: AWS::Route53::RecordSetGroup
-    Properties:
-      HostedZoneId: !Ref HostedZoneId
-      RecordSets:
-        - !If
-          - IsWeighted
-          - Name: !Ref DomainName
-            Type: A
-            SetIdentifier: cloudfront
-            Weight: !Ref CloudFrontWeight
-            AliasTarget:
-              DNSName: !GetAtt Distribution.DomainName
-              HostedZoneId: Z2FDTNDATAQYW2
-          - Name: !Ref DomainName
-            Type: A
-            SetIdentifier: cloudfront
-            Failover: PRIMARY
-            HealthCheckId: !Ref FrontHealthCheck
-            AliasTarget:
-              DNSName: !GetAtt Distribution.DomainName
-              HostedZoneId: Z2FDTNDATAQYW2
-              EvaluateTargetHealth: false
-        - !If
-          - IsWeighted
-          - Name: !Ref DomainName
-            Type: AAAA
-            SetIdentifier: cloudfront
-            Weight: !Ref CloudFrontWeight
-            AliasTarget:
-              DNSName: !GetAtt Distribution.DomainName
-              HostedZoneId: Z2FDTNDATAQYW2
-          # IPv6 は CloudFront だけに向ける。CloudFront が落ちたときは、ブラウザーが IPv4（A のセカンダリ）に回る想定。
-          - Name: !Ref DomainName
-            Type: AAAA
-            AliasTarget:
-              DNSName: !GetAtt Distribution.DomainName
-              HostedZoneId: Z2FDTNDATAQYW2
-        - !If
-          - IsFailover
-          - Name: !Ref DomainName
-            Type: A
-            SetIdentifier: secondary
-            Failover: SECONDARY
-            TTL: "60"
-            ResourceRecords: !Ref SecondaryARecords
-          - !Ref AWS::NoValue
 
   # アクセスログ（標準ログ v2）を CloudWatch Logs に送る。
   AccessLogGroup:
@@ -247,7 +177,10 @@ Resources:
 
 Outputs:
   DistributionDomainName:
-    Description: Test the front with this domain before raising CloudFrontWeight
+    Description: Alias target for the Route 53 records of DomainName
     Value: !GetAtt Distribution.DomainName
+  HealthCheckId:
+    Description: Attach to the primary (CloudFront) failover record
+    Value: !Ref FrontHealthCheck
   AccessLogGroupName:
     Value: !Ref AccessLogGroup

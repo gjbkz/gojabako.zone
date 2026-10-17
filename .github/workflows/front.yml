@@ -2,8 +2,14 @@ name: Front
 on:
   workflow_dispatch:
     inputs:
+      dns-mode:
+        description: "weighted (migrating) or failover (CloudFront primary, one host as secondary)"
+        required: true
+        default: weighted
+        type: choice
+        options: [weighted, failover]
       cloudfront-weight:
-        description: Weight of the Route 53 record that points at CloudFront (0 = not serving)
+        description: (weighted) Weight of the Route 53 record that points at CloudFront (0 = not serving)
         required: true
         default: "0"
 permissions:
@@ -33,4 +39,6 @@ jobs:
           NetlifyDomain=${{ vars.FRONT_NETLIFY_DOMAIN }}
           FirebaseDomain=${{ vars.FRONT_FIREBASE_DOMAIN }}
           AwsDomain=${{ vars.FRONT_AWS_DOMAIN }}
+          DnsMode=${{ inputs.dns-mode }}
           CloudFrontWeight=${{ inputs.cloudfront-weight }}
+          SecondaryARecords=${{ vars.FRONT_SECONDARY_A_RECORDS }}

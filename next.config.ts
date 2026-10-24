@@ -58,38 +58,6 @@ const nextConfig: NextConfig = {
 				fileURLToPath(new URL("./src/util/rehype/", import.meta.url)),
 			];
 		}
-		config.module.rules.push(
-			...(function* () {
-				// https://react-svgr.com/docs/next/#usage
-				// 既存のSVG読み込みルールを取得
-				const fileLoaderRule = config.module.rules.find(
-					(rule: { test?: { test?: (s: string) => boolean } }) =>
-						rule.test?.test?.(".svg"),
-				);
-				if (fileLoaderRule) {
-					// ?urlが付いている場合は既存ルールで読む
-					yield {
-						...fileLoaderRule,
-						test: /\.svg$/i,
-						resourceQuery: /url/, // *.svg?url
-					};
-					// ReactComponentとして読む
-					yield {
-						test: /\.svg$/i,
-						issuer: fileLoaderRule.issuer,
-						resourceQuery: {
-							not: [...fileLoaderRule.resourceQuery.not, /url/],
-						},
-						use: ["@svgr/webpack"],
-					};
-					// 既存のSVG読み込みルールは*.svgを無視させる
-					fileLoaderRule.exclude = /\.svg$/i;
-				} else {
-					// ReactComponentとして読む
-					yield { test: /\.svg$/i, use: ["@svgr/webpack"] };
-				}
-			})(),
-		);
 		return config;
 	},
 };

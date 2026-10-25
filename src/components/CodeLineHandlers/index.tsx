@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
+import { hashHitClassName } from "../../util/classnames.ts";
 import { getCurrentUrl } from "../../util/getCurrentUrl.ts";
 import { minmax } from "../../util/minmax.ts";
 import { noop } from "../../util/noop.ts";
@@ -9,7 +10,6 @@ import {
 	parseRangeListString,
 	toRangeListString,
 } from "../../util/range.ts";
-import { hashHitClassName } from "../HighlightHash";
 import { useHash } from "../use/Hash";
 
 /**

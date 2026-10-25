@@ -41,6 +41,13 @@
 		}
 	}
 
+	/*
+	 * URL のハッシュが指す要素を強調します。コードブロックの行は範囲指定があるので
+	 * :target ではなく CodeLineHandlers が付ける .hash-hit で強調します。
+	 * 行の選択は history.replaceState で URL を変えるため :target が更新されません。
+	 * 行を選択している間は :target の強調を止めます。
+	 */
+	&:not(:has(:global(.hash-hit))) :target:not(:global(.hljs-ln)),
 	& :global(.hash-hit) {
 		--gjBackgroundColor: var(--gjYellow1);
 		background-color: var(--gjBackgroundColor);

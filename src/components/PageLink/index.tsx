@@ -16,7 +16,7 @@ export const PageLink = ({ page, showDescription }: PageLinkProps) => {
 	const isUpdated =
 		getDateString(page.publishedAt) !== getDateString(page.updatedAt);
 	return (
-		<Link href={page.path} className={css.container}>
+		<Link href={page.path} className={css.container} prefetch={false}>
 			<span>{page.title.join("")}</span>
 			<PageDate dateTime={publishedAt} suffix="公開" />
 			{isUpdated && (

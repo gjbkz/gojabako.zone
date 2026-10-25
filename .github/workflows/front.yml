@@ -22,6 +22,7 @@ jobs:
           --stack-name gojabako-front
           --template-file front.yaml
           --no-fail-on-empty-changeset
+          --capabilities CAPABILITY_IAM
           --parameter-overrides
           HostedZoneId=${{ vars.FRONT_HOSTED_ZONE_ID }}
           VercelDomain=${{ vars.FRONT_VERCEL_DOMAIN }}

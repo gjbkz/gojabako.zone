@@ -192,7 +192,8 @@ Resources:
       Role: !GetAtt HealthCheckRole.Arn
       Environment:
         Variables:
-          FUNCTION_NAME: !Ref RouterFunction
+          # Ref は ARN を返すので、RouterFunction の Name と同じ値を渡す。
+          FUNCTION_NAME: !Sub "${AWS::StackName}-router"
           TOPIC_ARN: !Ref AlertTopic
           # id は function.js の originId と揃える。
           ORIGINS: !Sub '[{"id":"vercel","domain":"${VercelDomain}"},{"id":"netlify","domain":"${NetlifyDomain}"},{"id":"firebase","domain":"${FirebaseDomain}"},{"id":"aws","domain":"${AwsDomain}"}]'

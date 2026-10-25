@@ -6,7 +6,7 @@
 	"scripts": {
 		"test": "run-s test:*",
 		"test:type": "tsc --noEmit",
-		"test:unit": "node --test \"src/**/*.test.ts\"",
+		"test:unit": "node --test \"src/**/*.test.ts\" \"infra/**/*.test.ts\"",
 		"e2e": "playwright test",
 		"dev": "run-p build:meta page-list dev:*",
 		"dev:css": "node src/cli/cssTypes.ts --watch",

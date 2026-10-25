@@ -28,3 +28,4 @@ jobs:
           NetlifyDomain=${{ vars.FRONT_NETLIFY_DOMAIN }}
           FirebaseDomain=${{ vars.FRONT_FIREBASE_DOMAIN }}
           AwsDomain=${{ vars.FRONT_AWS_DOMAIN }}
+          AlertEmail=${{ vars.FRONT_ALERT_EMAIL }}

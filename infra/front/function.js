@@ -12,6 +12,10 @@ const origins = [
 	{ originId: "aws", label: "AWS", weight: 1 },
 ];
 
+// ヘルスチェックの Lambda（health.js）が落ちているオリジンの ID をこの行に書き込んで公開し直す。
+// この行の形を変えるときは health.js の unhealthyLinePattern も直す。
+const unhealthyOriginIds = [];
+
 // 主オリジンがこのステータスを返すか、接続できなければ予備オリジンに切り替える。
 const failoverStatusCodes = [500, 502, 503, 504];
 
@@ -80,12 +84,22 @@ function pickByWeight(candidates, seed) {
 	return candidates[candidates.length - 1];
 }
 
+function isHealthy(o) {
+	return !unhealthyOriginIds.includes(o.originId);
+}
+
+// 落ちているオリジンは主にも予備にも選ばない。全部落ちていれば全部から選ぶ。
 function pickOrigins(viewerIp, now) {
 	const day = Math.floor(now / 86400000);
 	const seed = hash(`${viewerIp}|${day}`);
-	const primary = pickByWeight(origins, seed);
+	const healthy = origins.filter(isHealthy);
+	const primary = pickByWeight(healthy.length > 0 ? healthy : origins, seed);
 	const rest = origins.filter((o) => o !== primary);
-	const secondary = pickByWeight(rest, Math.floor(seed / 65536));
+	const healthyRest = rest.filter(isHealthy);
+	const secondary = pickByWeight(
+		healthyRest.length > 0 ? healthyRest : rest,
+		Math.floor(seed / 65536),
+	);
 	return { primary, secondary };
 }
 

@@ -25,6 +25,9 @@ Parameters:
   LogRetentionInDays:
     Type: Number
     Default: 90
+  AlertEmail:
+    Type: String
+    Description: Email address notified when a deployment target goes down or comes back
 
 Resources:
   Certificate:
@@ -132,6 +135,84 @@ Resources:
       HealthCheckTags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-front"
+
+  # デプロイ先のヘルスチェック。1 分ごとに各デプロイ先の /health を見て、
+  # 落ちている先を RouterFunction のコードに書き込んで公開し直す（health.js）。
+  # スタックを更新すると RouterFunction は「全部正常」に戻るが、次の実行で書き直される。
+  AlertTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref AlertEmail
+  HealthCheckLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${AWS::StackName}-health"
+      RetentionInDays: 14
+  HealthCheckRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: health-check
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - cloudfront:GetFunction
+                  - cloudfront:DescribeFunction
+                  - cloudfront:UpdateFunction
+                  - cloudfront:PublishFunction
+                Resource: !GetAtt RouterFunction.FunctionARN
+              - Effect: Allow
+                Action: sns:Publish
+                Resource: !Ref AlertTopic
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: !GetAtt HealthCheckLogGroup.Arn
+  HealthCheckFunction:
+    Type: AWS::Lambda::Function
+    DependsOn: HealthCheckLogGroup
+    Properties:
+      FunctionName: !Sub "${AWS::StackName}-health"
+      Runtime: nodejs22.x
+      Architectures: [arm64]
+      Handler: index.handler
+      MemorySize: 128
+      Timeout: 30
+      Role: !GetAtt HealthCheckRole.Arn
+      Environment:
+        Variables:
+          FUNCTION_NAME: !Ref RouterFunction
+          TOPIC_ARN: !Ref AlertTopic
+          # id は function.js の originId と揃える。
+          ORIGINS: !Sub '[{"id":"vercel","domain":"${VercelDomain}"},{"id":"netlify","domain":"${NetlifyDomain}"},{"id":"firebase","domain":"${FirebaseDomain}"},{"id":"aws","domain":"${AwsDomain}"}]'
+      Code:
+        ZipFile: |
+          __HEALTH_CODE__
+  HealthCheckSchedule:
+    Type: AWS::Events::Rule
+    Properties:
+      ScheduleExpression: rate(1 minute)
+      Targets:
+        - Id: health
+          Arn: !GetAtt HealthCheckFunction.Arn
+  HealthCheckPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref HealthCheckFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt HealthCheckSchedule.Arn
 
   # アクセスログ（標準ログ v2）を CloudWatch Logs に送る。
   AccessLogGroup:

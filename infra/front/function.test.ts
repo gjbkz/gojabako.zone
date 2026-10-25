@@ -9,8 +9,14 @@ interface OriginGroup {
 }
 
 // CloudFront Functions の import 文を外し、cf を差し替えて handler を取り出す。
-const loadHandler = () => {
-	const source = readFileSync(new URL("function.js", import.meta.url), "utf8");
+const loadHandler = (unhealthyOriginIds: Array<string> = []) => {
+	const source = readFileSync(
+		new URL("function.js", import.meta.url),
+		"utf8",
+	).replace(
+		/^const unhealthyOriginIds = .*$/m,
+		`const unhealthyOriginIds = ${JSON.stringify(unhealthyOriginIds)};`,
+	);
 	const groups: Array<OriginGroup> = [];
 	const context = vm.createContext({
 		cf: { createRequestOriginGroup: (g: OriginGroup) => groups.push(g) },
@@ -109,4 +115,33 @@ test("訪問者が多ければすべてのオリジンに振られる", () => {
 	for (const [id, count] of counts) {
 		assert.ok(count > 150, `${id}: ${count}`);
 	}
+});
+
+test("落ちているオリジンは主にも予備にも選ばない", () => {
+	const { handler, groups } = loadHandler(["vercel", "netlify"]);
+	for (let i = 0; i < 200; i++) {
+		handler(createEvent("/", `203.0.113.${i}`));
+	}
+	for (const g of groups) {
+		const ids = g.originIds.map((o) => o.originId);
+		assert.ok(!ids.includes("vercel") && !ids.includes("netlify"), `${ids}`);
+	}
+});
+
+test("1 つしか生きていなければ、予備は落ちているものから選ぶ", () => {
+	const { handler, groups } = loadHandler(["vercel", "netlify", "firebase"]);
+	handler(createEvent("/"));
+	assert.equal(groups[0].originIds[0].originId, "aws");
+	assert.notEqual(groups[0].originIds[1].originId, "aws");
+});
+
+test("全部落ちていれば全部から選ぶ", () => {
+	const { handler, groups } = loadHandler([
+		"vercel",
+		"netlify",
+		"firebase",
+		"aws",
+	]);
+	handler(createEvent("/"));
+	assert.equal(groups.length, 1);
 });

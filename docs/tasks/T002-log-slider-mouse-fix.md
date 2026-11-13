@@ -11,6 +11,7 @@
 スライダーが前の位置に戻る（スナップバック）現象が起きていた。
 
 フィードバックループの流れ：
+
 1. ユーザードラッグ → `setRatio(newRatio)` → `onChangeValue` 呼び出し
 2. 親が `value` prop を更新 → 2つ目の `useEffect` が RAF をスケジュール
 3. ユーザーがさらにドラッグ → `setRatio(nextRatio)`
@@ -28,6 +29,7 @@
 ## テスト
 
 `src/components/LogSlider/index.test.ts` を追加。
+
 - `toLinearValue` / `toLogValue` の境界値テスト
 - ラウンドトリップ誤差が `1e-9` 未満であることの確認（修正の前提条件）
 

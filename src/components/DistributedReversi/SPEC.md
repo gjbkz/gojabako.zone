@@ -12,20 +12,21 @@
 
 ## ユーザーができること
 
-| 操作 | 内容 |
-|---|---|
-| セルをクリック | 自分の色を置き、挟まれたセルをひっくり返す |
-| ドラッグ | 盤面をスクロール |
-| ズームスライダー | 拡大縮小 |
-| フルスクリーン | 全画面表示 |
-| 「はじめから」 | 全セルを初期状態にリセット |
-| 編集モード ON でセルクリック | セルを追加・削除（盤面形状を変更） |
-| 開発モード ON | セル間のTX/RXバッファ件数を矢印で表示 |
-| 開発モードの遅延スライダー | 送受信の遅延を調整してゲームをスローモーション化 |
-| セルを右クリック | セルを選択（Shift/Ctrl/Metaで複数選択） |
-| 選択セルのインスペクタ | 選択セルの state・shared・playerCount を手動変更 |
+| 操作                         | 内容                                             |
+| ---------------------------- | ------------------------------------------------ |
+| セルをクリック               | 自分の色を置き、挟まれたセルをひっくり返す       |
+| ドラッグ                     | 盤面をスクロール                                 |
+| ズームスライダー             | 拡大縮小                                         |
+| フルスクリーン               | 全画面表示                                       |
+| 「はじめから」               | 全セルを初期状態にリセット                       |
+| 編集モード ON でセルクリック | セルを追加・削除（盤面形状を変更）               |
+| 開発モード ON                | セル間のTX/RXバッファ件数を矢印で表示            |
+| 開発モードの遅延スライダー   | 送受信の遅延を調整してゲームをスローモーション化 |
+| セルを右クリック             | セルを選択（Shift/Ctrl/Metaで複数選択）          |
+| 選択セルのインスペクタ       | 選択セルの state・shared・playerCount を手動変更 |
 
 **既知の制約**:
+
 - 本来のリバーシでは「1枚以上ひっくり返せる手」のみ有効だが、中央制御なしにこれを全セルが合意することは困難なため、どこにでも置ける仕様とする。
 - 複数のクリックが同時進行した場合、まれにフリップが欠けることがある。分散システムの限界として許容する。
 
@@ -34,22 +35,23 @@
 ## セルの状態
 
 ```ts
-type DRPlayerId = number;        // 0〜(playerCount-1) のプレイヤーID
-type DRCellState = DRPlayerId | "N";  // "N" = 未着手
+type DRPlayerId = number; // 0〜(playerCount-1) のプレイヤーID
+type DRCellState = DRPlayerId | "N"; // "N" = 未着手
 
 interface DRSharedState {
-  state: DRPlayerId;    // このセルが「次に置く色」（クリックで +1）
-  playerCount: number;  // プレイヤー数（デフォルト2）
+	state: DRPlayerId; // このセルが「次に置く色」（クリックで +1）
+	playerCount: number; // プレイヤー数（デフォルト2）
 }
 
 interface DRCell {
-  state: DRCellState;       // 確定した色（"N" or プレイヤーID）
-  pending: DRPlayerId | null; // ひっくり返り確定待ちの色（null = 待機なし）
-  shared: DRSharedState;    // 隣のセルに伝播する共有状態
+	state: DRCellState; // 確定した色（"N" or プレイヤーID）
+	pending: DRPlayerId | null; // ひっくり返り確定待ちの色（null = 待機なし）
+	shared: DRSharedState; // 隣のセルに伝播する共有状態
 }
 ```
 
 **`state` と `shared.state` の違い**:
+
 - `state` = 盤面に表示される確定した色
 - `shared.state` = 「次のクリックで何色を置くか」を示す手番情報。隣接セルへ connect で通知される
 
@@ -70,12 +72,12 @@ interface DRMessage {
 
 ### メッセージ種別
 
-| type | payload | 方向 | 用途 |
-|---|---|---|---|
-| `connect` | `DRSharedState` | 単方向 | 隣接セル発見時に自分の shared を通知 |
-| `reversi1` | `DRSharedState` | 伝播→ | ひっくり返し探索（要求） |
-| `reversi2` | `DRPlayerId \| null` | ←折返し | ひっくり返し確定または不成立（応答）|
-| `setShared` | `DRSharedState` | spread | shared を一括変更（デバッグ用） |
+| type        | payload              | 方向    | 用途                                 |
+| ----------- | -------------------- | ------- | ------------------------------------ |
+| `connect`   | `DRSharedState`      | 単方向  | 隣接セル発見時に自分の shared を通知 |
+| `reversi1`  | `DRSharedState`      | 伝播→   | ひっくり返し探索（要求）             |
+| `reversi2`  | `DRPlayerId \| null` | ←折返し | ひっくり返し確定または不成立（応答） |
+| `setShared` | `DRSharedState`      | spread  | shared を一括変更（デバッグ用）      |
 
 ---
 
@@ -83,11 +85,11 @@ interface DRMessage {
 
 ### mode（進む方向）
 
-| mode | 転送ルール |
-|---|---|
-| `"e"/"n"/"w"/"s"` | 指定方向にまっすぐ転送。隣にセルがなければ終端 |
+| mode                  | 転送ルール                                                                                                               |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `"e"/"n"/"w"/"s"`     | 指定方向にまっすぐ転送。隣にセルがなければ終端                                                                           |
 | `"ne"/"nw"/"sw"/"se"` | 斜め方向。`\|dx\| > \|dy\|` なら水平成分の方向へ、`\|dy\| > \|dx\|` なら垂直成分へ、同じなら空きバッファが少ない方へ送る |
-| `"spread"` | 来た方向以外の全方向に拡散（フラッドフィル） |
+| `"spread"`            | 来た方向以外の全方向に拡散（フラッドフィル）                                                                             |
 
 変位 `d` は TX バッファから RX バッファへ渡るたびに `d += DRAdjacentStep[direction]` で加算される。
 
@@ -208,35 +210,37 @@ dx === 0, dy === 0 → null（発信元 = 自分なので返さない）
 
 ### Atom 一覧
 
-| atom | 型 | URL同期 | 説明 |
-|---|---|---|---|
-| `cellAtom(cellId)` | `DRCell \| null` | — | セルごとの状態（atomFamily） |
-| `messageBufferAtom(bufferId)` | `DRMessage[]` | — | TX/RX バッファ（atomFamily） |
-| `cellListAtom` | `Set<DRCellId>` | `?c=...` | 存在するセルID一覧 |
-| `editModeAtom` | `boolean` | — | 編集モード |
-| `devModeAtom` | `boolean` | `?dev=1` | 開発モード |
-| `txDelayMsAtom` | `number` | `?txd=N` | 送信遅延 ms（デフォルト 20） |
-| `rxDelayMsAtom` | `number` | `?rxd=N` | 受信遅延 ms（デフォルト 20） |
-| `viewportAtom` | `XYWHZ` | — | ビューポート座標・ズーム |
-| `selectedCellsAtom` | `Set<DRCellId>` | — | 右クリック選択中のセルID |
-| `pointerPositionAtom` | `[x,y] \| null` | — | マウス座標（px） |
-| `draggingAtom` | `AbortController \| null` | — | ドラッグ中フラグ |
+| atom                          | 型                        | URL同期  | 説明                         |
+| ----------------------------- | ------------------------- | -------- | ---------------------------- |
+| `cellAtom(cellId)`            | `DRCell \| null`          | —        | セルごとの状態（atomFamily） |
+| `messageBufferAtom(bufferId)` | `DRMessage[]`             | —        | TX/RX バッファ（atomFamily） |
+| `cellListAtom`                | `Set<DRCellId>`           | `?c=...` | 存在するセルID一覧           |
+| `editModeAtom`                | `boolean`                 | —        | 編集モード                   |
+| `devModeAtom`                 | `boolean`                 | `?dev=1` | 開発モード                   |
+| `txDelayMsAtom`               | `number`                  | `?txd=N` | 送信遅延 ms（デフォルト 20） |
+| `rxDelayMsAtom`               | `number`                  | `?rxd=N` | 受信遅延 ms（デフォルト 20） |
+| `viewportAtom`                | `XYWHZ`                   | —        | ビューポート座標・ズーム     |
+| `selectedCellsAtom`           | `Set<DRCellId>`           | —        | 右クリック選択中のセルID     |
+| `pointerPositionAtom`         | `[x,y] \| null`           | —        | マウス座標（px）             |
+| `draggingAtom`                | `AbortController \| null` | —        | ドラッグ中フラグ             |
 
 ### 派生 Atom
 
-| atom | 型 | 説明 |
-|---|---|---|
-| `viewBoxAtom` | `string` | SVG `viewBox` 属性値（ドラッグ補正込み） |
-| `zoomAtom` | `{ z, cx?, cy? }` | ズーム操作（読み書き） |
-| `pointeredCellAtom` | `DRCellId \| null` | マウス下のセルID |
-| `selectedCellInfoAtom` | `{ map, maxPlayerCount }` | 選択セルの詳細 |
+| atom                   | 型                        | 説明                                     |
+| ---------------------- | ------------------------- | ---------------------------------------- |
+| `viewBoxAtom`          | `string`                  | SVG `viewBox` 属性値（ドラッグ補正込み） |
+| `zoomAtom`             | `{ z, cx?, cy? }`         | ズーム操作（読み書き）                   |
+| `pointeredCellAtom`    | `DRCellId \| null`        | マウス下のセルID                         |
+| `selectedCellInfoAtom` | `{ map, maxPlayerCount }` | 選択セルの詳細                           |
 
 ### atomFamily のクリーンアップ
 
 セルが削除された際、`cellAtom` と関連する `messageBufferAtom`（8バッファ）をメモリから解放する:
 
 ```ts
-cellAtom.setShouldRemove((createdAt, cellId) => !store.get(cellListAtom).has(cellId));
+cellAtom.setShouldRemove(
+	(createdAt, cellId) => !store.get(cellListAtom).has(cellId),
+);
 ```
 
 ---
@@ -272,10 +276,9 @@ src/util/jotai/
 // src/util/jotai/callback.ts
 import type { Getter, Setter } from "jotai";
 export interface JotaiSelectorOpts {
-  get: Getter;
-  set: Setter;
+	get: Getter;
+	set: Setter;
 }
 ```
 
 `useAtomCallback` の `(get, set) => ...` コールバックがそのまま `JotaiSelectorOpts` として渡せる。
-

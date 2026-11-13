@@ -103,6 +103,10 @@ Resources:
           CachedMethods: [GET, HEAD, OPTIONS]
           Compress: true
           CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+          # クエリ文字列と訪問者のヘッダーをオリジンに送る（Managed-AllViewerExceptHostHeader）。
+          # 無いと /_next/image?url=... の url、Accept-Encoding、RSC ヘッダーが届かない。
+          # Host だけは送らず、各オリジンの既定ドメインのままにする。
+          OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac
           FunctionAssociations:
             - EventType: viewer-request
               FunctionARN: !GetAtt RouterFunction.FunctionMetadata.FunctionARN

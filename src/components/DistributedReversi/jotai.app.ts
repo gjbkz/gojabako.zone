@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { atomFamily } from "jotai/utils";
+import { atomFamily } from "jotai-family";
 import { clamp } from "../../util/clamp.ts";
 import type { DRBufferId, DRCell, DRCellId, DRMessage } from "./util.ts";
 import { toDRCellId, zoom } from "./util.ts";

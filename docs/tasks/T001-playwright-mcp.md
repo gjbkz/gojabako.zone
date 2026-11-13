@@ -13,20 +13,20 @@
 
 ### 主なオプション
 
-| オプション | 説明 |
-|---|---|
-| `--headed` | ブラウザを可視状態で起動 |
-| `--browser chrome` | 実際のChromeを使用（Chromiumではなく） |
+| オプション               | 説明                                       |
+| ------------------------ | ------------------------------------------ |
+| `--headed`               | ブラウザを可視状態で起動                   |
+| `--browser chrome`       | 実際のChromeを使用（Chromiumではなく）     |
 | `--user-data-dir <path>` | プロファイルを永続化するディレクトリを指定 |
-| `--isolated` | セッションをメモリ内に保持（永続化しない） |
-| `--storage-state <path>` | ストレージ状態ファイルのパス |
+| `--isolated`             | セッションをメモリ内に保持（永続化しない） |
+| `--storage-state <path>` | ストレージ状態ファイルのパス               |
 
 ### MCPスコープの選び方
 
-| スコープ | 保存先 | git管理 |
-|---|---|---|
-| `--scope local` | `~/.claude.json` | ✗（ユーザー固有パスに適切） |
-| `--scope project` | `.mcp.json`（プロジェクトルート） | ✓ |
+| スコープ          | 保存先                            | git管理                     |
+| ----------------- | --------------------------------- | --------------------------- |
+| `--scope local`   | `~/.claude.json`                  | ✗（ユーザー固有パスに適切） |
+| `--scope project` | `.mcp.json`（プロジェクトルート） | ✓                           |
 
 `--user-data-dir` にユーザー固有パスを使うため、`--scope local` を選ぶ。
 
@@ -48,18 +48,18 @@ claude mcp add --scope local playwright -- \
 
 ```json
 {
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": [
-        "@playwright/mcp@latest",
-        "--browser",
-        "chrome",
-        "--user-data-dir",
-        "/Users/itok/.claude/chrome-profile"
-      ]
-    }
-  }
+	"mcpServers": {
+		"playwright": {
+			"command": "npx",
+			"args": [
+				"@playwright/mcp@latest",
+				"--browser",
+				"chrome",
+				"--user-data-dir",
+				"/Users/itok/.claude/chrome-profile"
+			]
+		}
+	}
 }
 ```
 

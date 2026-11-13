@@ -1,5 +1,5 @@
 import { type ExportResult, ExportResultCode } from "@opentelemetry/core";
-import { JsonLogsSerializer } from "@opentelemetry/otlp-transformer/build/src/logs/json";
+import { JsonLogsSerializer } from "@opentelemetry/otlp-transformer";
 import type {
 	LogRecordExporter,
 	ReadableLogRecord,

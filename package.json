@@ -35,7 +35,7 @@
 		"@nlib/typing": "4.0.2",
 		"@opentelemetry/api": "1.10.0",
 		"@opentelemetry/core": "3.1.1",
-		"@opentelemetry/otlp-transformer": "0.301.1",
+		"@opentelemetry/otlp-transformer": "0.301.2",
 		"@opentelemetry/resources": "3.1.1",
 		"@opentelemetry/sdk-logs": "3.1.1",
 		"@opentelemetry/semantic-conventions": "1.45.0",
@@ -57,14 +57,14 @@
 		"next": "16.1.6",
 		"npm-run-all2": "9.0.4",
 		"postcss": "8.5.32",
-		"postcss-selector-parser": "7.1.8",
+		"postcss-selector-parser": "7.2.1",
 		"rehype-highlight": "7.0.2",
 		"rehype-katex": "7.0.1",
 		"rehype-parse": "9.0.1",
 		"rehype-slug": "6.0.0",
 		"remark-gfm": "4.0.1",
 		"remark-math": "6.0.0",
-		"sass": "1.108.1",
+		"sass": "1.108.2",
 		"sharp": "0.35.5",
 		"typescript": "5.9.3",
 		"unist-util-find": "3.0.0",
@@ -80,9 +80,9 @@
 		]
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.6.6",
+		"@biomejs/biome": "2.6.7",
 		"@nlib/githooks": "0.2.2",
 		"@playwright/test": "1.65.0",
-		"baseline-browser-mapping": "2.11.35"
+		"baseline-browser-mapping": "2.11.36"
 	}
 }

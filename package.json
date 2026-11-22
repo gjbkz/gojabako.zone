@@ -52,11 +52,11 @@
 		"kuromoji": "0.1.2",
 		"lowlight": "3.3.0",
 		"mdast-util-from-markdown": "2.1.0",
-		"mdast-util-to-hast": "13.2.1",
+		"mdast-util-to-hast": "13.2.2",
 		"mdast-util-to-string": "4.0.0",
 		"next": "16.1.6",
 		"npm-run-all2": "9.0.4",
-		"postcss": "8.5.32",
+		"postcss": "8.5.33",
 		"postcss-selector-parser": "7.2.1",
 		"rehype-highlight": "7.0.2",
 		"rehype-katex": "7.0.1",
@@ -80,9 +80,9 @@
 		]
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.6.7",
+		"@biomejs/biome": "2.6.8",
 		"@nlib/githooks": "0.2.2",
-		"@playwright/test": "1.65.0",
-		"baseline-browser-mapping": "2.11.36"
+		"@playwright/test": "1.65.1",
+		"baseline-browser-mapping": "2.11.38"
 	}
 }
